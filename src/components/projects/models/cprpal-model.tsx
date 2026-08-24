@@ -89,16 +89,24 @@ export function CprPalModel({ active, reducedMotion }: ModelProps) {
 
   return (
     <group ref={puckRef}>
-      {/* body: ribbed glossy shell, open at the top */}
+      {/* body: ribbed glossy shell (open top and bottom; capped below) */}
       <mesh castShadow receiveShadow>
         <latheGeometry args={[BODY_PROFILE, 32]} />
         <meshStandardMaterial {...MAT.body} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* flat top cap */}
+      {/* flat top cap. Double-sided: the shell is a full 360° lathe with
+          no cap of its own, so from a low angle you'd otherwise see clean
+          through the "back" of this disc into the hollow interior. */}
       <mesh position={[0, TOP_Y, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <circleGeometry args={[TOP_R, 32]} />
-        <meshStandardMaterial {...MAT.top} />
+        <meshStandardMaterial {...MAT.top} side={THREE.DoubleSide} />
+      </mesh>
+
+      {/* bottom cap, closing the shell off underneath too */}
+      <mesh position={[0, 0.005, 0]} rotation={[Math.PI / 2, 0, 0]} receiveShadow>
+        <circleGeometry args={[0.87, 32]} />
+        <meshStandardMaterial {...MAT.body} side={THREE.DoubleSide} />
       </mesh>
 
       {/* screen */}
