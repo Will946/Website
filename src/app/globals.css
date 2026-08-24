@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Design tokens — oscilloscope-inspired, dark-first.
+  Anything under @theme becomes a Tailwind utility (bg-void, text-signal,
+  text-display, ease-signal, etc). Values that Tailwind has no utility
+  namespace for (durations, section rhythm, grid line color) live as plain
+  custom properties below and are consumed directly via var().
+*/
+@theme {
+  /* Surfaces — near-black lab bench, not pure black */
+  --color-void: #08090a;
+  --color-surface: #111314;
+  --color-surface-raised: #17191b;
+  --color-border: #262a2c;
+  --color-border-strong: #383d40;
+
+  /* Foreground — warm off-white, never pure white */
+  --color-fg: #edeeea;
+  --color-fg-muted: #9aa39c;
+  --color-fg-subtle: #676e6a;
+
+  /* Signal accents — used for interactive/active state, not decoration */
+  --color-signal: #3ee587; /* phosphor green — active, success, primary interactive */
+  --color-signal-dim: #1a6b3f;
+  --color-cyan: #4fd8e8; /* secondary accent — links, measurements */
+  --color-cyan-dim: #1d5c66;
+  --color-amber: #e8a33d; /* warning, emphasis, technical readouts */
+  --color-amber-dim: #7a551f;
+  --color-fault: #e8514f; /* reserved: error / fault / destructive only */
+  --color-fault-dim: #7a2c2a;
+
+  /* Typography */
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  --text-display: clamp(2.75rem, 2.25rem + 4vw, 7rem);
+  --text-h1: clamp(2.25rem, 1.75rem + 2.5vw, 4rem);
+  --text-h2: clamp(1.5rem, 1.25rem + 1.25vw, 2.5rem);
+  --text-h3: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-label: 0.75rem;
+
+  --tracking-display: -0.02em;
+  --tracking-label: 0.08em;
+
+  /* Instrument-panel radii — sharp by default, never pill-shaped */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  /* Easing — a signal settling, not a bouncy UI default */
+  --ease-signal: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Live-status pulse — for "system online" style indicators */
+  --animate-signal-pulse: signal-pulse 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+
+  /* A brief signal sweep across text — mostly still, glints occasionally.
+     Not a constant shimmer. */
+  --animate-name-sweep: name-sweep 9s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes signal-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.4);
   }
 }
 
+@keyframes name-sweep {
+  0% {
+    background-position: 140% 0;
+  }
+  6% {
+    background-position: -40% 0;
+  }
+  100% {
+    background-position: -40% 0;
+  }
+}
+
+@keyframes scene-loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+:root {
+  /* Duration scale — mirrored in src/lib/motion.ts for Motion/anime/spring */
+  --duration-instant: 100ms;
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+  --duration-signal: 600ms;
+
+  /* Section rhythm — the "breathing room" between compositions */
+  --space-section-y: clamp(4rem, 3rem + 6vw, 8rem);
+  --container-max: 76rem;
+
+  --grid-line: color-mix(in oklab, var(--color-fg) 6%, transparent);
+  --grid-line-strong: color-mix(in oklab, var(--color-fg) 12%, transparent);
+}
+
+html {
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-void);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-signal-dim);
+  color: var(--color-fg);
+}
+
+/* Visible focus states everywhere — never suppressed */
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Schematic/grid-paper background — decorative, used sparingly */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-grid-fine {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 8px 8px;
 }
