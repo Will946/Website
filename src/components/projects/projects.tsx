@@ -17,7 +17,7 @@ import { MotorDriver3DVisual } from "@/components/projects/visuals/motor-driver-
 import { UsbCPd3DVisual } from "@/components/projects/visuals/usb-c-pd-3d";
 import { SirGrab3DVisual } from "@/components/projects/visuals/sirgrab-3d";
 import { CprPal3DVisual } from "@/components/projects/visuals/cprpal-3d";
-import { BloomVisual } from "@/components/projects/visuals/bloom-visual";
+import { OhareAir3DVisual } from "@/components/projects/visuals/ohare-air-3d";
 import { Bldcm3DVisual } from "@/components/projects/visuals/bldcm-3d";
 import { TeaCozy3DVisual } from "@/components/projects/visuals/tea-cozy-3d";
 import type { ProjectId } from "@/lib/projects";
@@ -33,7 +33,7 @@ const visualComponents: Record<ProjectId, ComponentType<VisualProps>> = {
   "usb-c-pd": UsbCPd3DVisual,
   sirgrab: SirGrab3DVisual,
   cprpal: CprPal3DVisual,
-  bloom: BloomVisual,
+  bloom: OhareAir3DVisual,
   "bldcm-driver": Bldcm3DVisual,
   "tea-cozy-hotplate": TeaCozy3DVisual,
 };

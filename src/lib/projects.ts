@@ -116,12 +116,12 @@ export const projects: Project[] = [
   },
   {
     id: "bloom",
-    title: "Bloom",
-    navLabel: "Bloom",
-    hook: "Genuinely impressive when it works. A little sad when it only half-opens.",
+    title: "O'Hare Air",
+    navLabel: "O'Hare Air",
+    hook: "Named after the guy in The Lorax who got rich selling bottled air. This one just tells you the truth about the room instead.",
     detail:
-      "Bloom is an air quality monitor where the reading is the mechanism: a servo-driven petal linkage that opens or closes continuously with AQI, so the openness of the flower is the analog readout, with a center LED as a secondary green / yellow / red indicator.",
-    technologies: ["Servo-Driven Linkage", "AQI → Position", "RGB Indicator"],
+      "A desktop air quality monitor shaped like a flower, built around a ScioSense ENS161 (eTVOC, eCO2, and its own onboard 1-5 AQI-UBA rating) and an ENS210 for temperature and humidity. A 28BYJ-48 stepper sweeps a needle across five positions matching the sensor's AQI-UBA output, an RGB LED fades green to red with it, and the board hosts its own Wi-Fi dashboard with live charts, 7-day on-device history, and CSV export, no app or cloud involved. Two PCB generations exist: a shield that plugs onto an ESP32-S3 dev board, and a from-scratch board built around a bare ESP32-H2 module for a much smaller footprint.",
+    technologies: ["ENS161 + ENS210", "AQI-UBA 1-5", "28BYJ-48 Stepper", "Wi-Fi Dashboard", "7-Day History", "Two PCB Generations"],
     size: "large",
   },
   {
