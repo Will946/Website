@@ -20,13 +20,13 @@ export function openReel(e: React.MouseEvent) {
   reel.set({ open: true });
 }
 
-function EntryCard({ entry }: { entry: (typeof EXPERIENCE)[number] }) {
+function EntryCard({ entry, tags = true }: { entry: (typeof EXPERIENCE)[number]; tags?: boolean }) {
   return (
     <li id={`exp-${entry.id}`} className="card">
       <div className="card-head"><h3><S>{entry.title}</S></h3><span className="card-dates"><S>{entry.dates}</S></span></div>
       <p className="card-role"><S>{entry.role}</S></p>
       <ul className="bullets">{entry.bullets.map((b) => <li key={b}><S>{b}</S></li>)}</ul>
-      <ul className="tags">{entry.tags.map((t) => <li key={t}><S>{t}</S></li>)}</ul>
+      {tags && <ul className="tags">{entry.tags.map((t) => <li key={t}><S>{t}</S></li>)}</ul>}
     </li>
   );
 }
@@ -39,7 +39,7 @@ export default function Sections() {
       <section id="experience" data-stop className="scene cards-right">
         <div className="scene-col">
           <SquishTitle text="Experience" />
-          <p className="section-lead"><span><S>Each sword on the rack is one of these. Draw one.</S></span> <button type="button" className="pill" onClick={() => play('vending')}>Draw a sword</button></p>
+          <p className="section-lead"><button type="button" className="pill" onClick={() => play('vending')}>Draw a sword</button></p>
           <ol className="cards">{EXPERIENCE.filter((e) => !e.about).map((e) => <EntryCard key={e.id} entry={e} />)}</ol>
         </div>
       </section>
@@ -47,7 +47,7 @@ export default function Sections() {
       <section id="projects" data-stop className="scene cards-left">
         <div className="scene-col">
           <SquishTitle text="Projects" />
-          <p className="section-lead"><span><S>The omikuji box hands these out as fortunes, pranks included.</S></span> <button type="button" className="pill" onClick={() => play('gacha')}>Shake the box</button></p>
+          <p className="section-lead"><button type="button" className="pill" onClick={() => play('gacha')}>Shake the box</button></p>
           <ul className="cards projects-grid">
             {PROJECTS.filter((p) => p.listed !== false).map((p) => (
               <li key={p.id} id={`project-${p.id}`} className="card">
@@ -64,15 +64,15 @@ export default function Sections() {
       <section id="about" data-stop className="scene cards-right">
         <div className="scene-col">
           <SquishTitle text="About" />
-          <p className="section-lead"><span><S>School, hobbies and tools. The taiko drum has Daruma dolls in it.</S></span> <button type="button" className="pill" onClick={() => play('claw')}>Hit the drum</button></p>
+          <p className="section-lead"><button type="button" className="pill" onClick={() => play('claw')}>Hit the drum</button></p>
           <ol className="cards">
-            {EXPERIENCE.filter((e) => e.about).map((e) => <EntryCard key={e.id} entry={e} />)}
+            {EXPERIENCE.filter((e) => e.about).map((e) => <EntryCard key={e.id} entry={e} tags={false} />)}
             <li className="card">
               <h3><S>Skills</S></h3>
               {SKILLS.map((s) => (
                 <div key={s.group} className="skill-group">
                   <h4><S>{s.group}</S></h4>
-                  <ul className="tags">{s.items.map((t) => <li key={t}><S>{t}</S></li>)}</ul>
+                  <p className="card-blurb skill-line"><S>{s.items.join(' · ')}</S></p>
                 </div>
               ))}
             </li>
@@ -88,7 +88,7 @@ export default function Sections() {
             <a className="pill" href="mailto:wyw3932@gmail.com">wyw3932@gmail.com</a>
             <LogoLink name="github" className="pill logo" />
             <LogoLink name="instagram" className="pill logo" />
-            <a className="pill" href="/assets/ResumeOfficial.pdf" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Résumé</a>
+            <a className="pill" href="/assets/ResumeOfficial.pdf" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Resume</a>
           </div>
           <footer className="site-footer"><S>Built with React Three Fiber and Rapier. The dolls and sticks are real physics; the jobs are real jobs.</S></footer>
         </div>

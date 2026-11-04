@@ -252,6 +252,7 @@ html[data-theme="dark"] .theme-ring i { --glow: 255, 79, 139; }
 .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
 .projects-grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
 .skill-group + .skill-group { margin-top: 12px; }
+.skill-line { margin: 0; }
 .skill-group h4 { margin: 0 0 6px; font: 900 12px/1 var(--font); letter-spacing: 1px; text-transform: uppercase; opacity: .65; }
 .card { position: relative; padding: 20px 22px 18px; border-radius: 18px; background: var(--paper); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--drop); }
 .card h3 { margin: 0; font: 400 28px/1.05 'Lilita One', 'Arial Black', sans-serif; }

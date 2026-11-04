@@ -26,9 +26,10 @@ const CARD_ASPECT = 1.6 / 2.25;
 
 // What the back says. A line with a link opens it when tapped; the marks along the bottom likewise.
 const LINES: { role: string; at: string; href?: string }[] = [
-  { role: 'Soldering Samurai', at: '@ my desk, at 350°C' },
-  { role: 'Unemployed', at: '@ but wicked cool' },
-  { role: 'EE, B.S. + M.S.', at: '@ USC' },
+  { role: 'Electronics Engineer', at: 'PCB Design · Motor Drives · Embedded Systems' },
+  { role: 'M.S./B.S. Electrical and Computer Engineering', at: '@ University of Southern California' },
+  { role: 'Currently Working @', at: 'Between CEO roles spiritually' },
+  { role: 'Current Project', at: 'Automated Daily Pill Dispenser' },
 ];
 const MARKS: LogoName[] = ['github', 'instagram'];
 const INK = '#141414', PINK = '#FF4F8B', GOLD = '#F2C744', MUTED = '#6B6760';
@@ -89,23 +90,39 @@ export default function HeroBadge() {
     ctx.fillStyle = INK;
     ctx.fillText('SOLDERING SAMURAI', 72, 170);
     // the lines: a role, then where, each with a gold dot; a link is underlined in pink with an arrow
-    let y = 445;
+    // Four entries between the band and the coins: the heading wraps onto a second line if it must, the
+    // line under it shrinks to fit.
+    const MAX_W = 1024 - 130 - 60, ROLE = 66, ROLE_LH = 74, AT = 48;
+    const wrap = (text: string) => {
+      ctx.font = `900 ${ROLE}px Nunito, sans-serif`;
+      const out: string[] = [];
+      for (const word of text.split(' ')) {
+        const cur = out[out.length - 1];
+        if (cur && ctx.measureText(`${cur} ${word}`).width <= MAX_W) out[out.length - 1] = `${cur} ${word}`; else out.push(word);
+      }
+      return out;
+    };
+    let y = 410;
     for (const line of LINES) {
+      const rows = wrap(line.role);
       ctx.fillStyle = GOLD;
-      ctx.beginPath(); ctx.arc(92, y - 23, 16, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(92, y - 22, 15, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = INK;
-      ctx.font = '900 76px Nunito, sans-serif';
-      ctx.fillText(line.role, 130, y);
-      ctx.font = '700 54px Nunito, sans-serif';
-      ctx.fillStyle = line.href ? PINK : MUTED;
+      ctx.font = `900 ${ROLE}px Nunito, sans-serif`;
+      rows.forEach((row, i) => ctx.fillText(row, 130, y + i * ROLE_LH));
+      const subY = y + (rows.length - 1) * ROLE_LH + 62;
       const text = line.href ? `${line.at}  ↗` : line.at;
-      ctx.fillText(text, 130, y + 72);
+      let size = AT;
+      ctx.font = `700 ${size}px Nunito, sans-serif`;
+      while (size > 26 && ctx.measureText(text).width > MAX_W) { size -= 2; ctx.font = `700 ${size}px Nunito, sans-serif`; }
+      ctx.fillStyle = line.href ? PINK : MUTED;
+      ctx.fillText(text, 130, subY);
       if (line.href) {
         const width = ctx.measureText(text).width;
-        ctx.fillRect(130, y + 84, width, 4);
-        zones.current.push({ x: 110 * u, y: (y + 14) * u, w: (width + 40) * u, h: 88 * u, href: line.href });
+        ctx.fillRect(130, subY + 12, width, 4);
+        zones.current.push({ x: 110 * u, y: (subY - 58) * u, w: (width + 40) * u, h: 88 * u, href: line.href });
       }
-      y += 235;
+      y = subY + 112;
     }
     // the marks along the bottom, each on a dark coin, each a tap away
     const R = 92, cy = HH - 215;

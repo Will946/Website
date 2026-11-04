@@ -60,7 +60,7 @@ export default function App() {
           <nav className="hero-links" aria-label="Links">
             <LogoLink name="github" className="logo" />
             <LogoLink name="instagram" className="logo" />
-            <a href="/assets/ResumeOfficial.pdf" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Résumé</a>
+            <a href="/assets/ResumeOfficial.pdf" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Resume</a>
           </nav>
         </div>
         <p className={`hero-cta${landed ? ' in' : ''}`}>Scroll, or click the drum, the box or the swords</p>
@@ -74,7 +74,7 @@ export default function App() {
       {!hero && (
         <div className="play-ui">
           <header className="brand">William Wong</header>
-          <button type="button" className="resume-btn" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={() => reel.set({ open: true })}>Résumé</button>
+          <button type="button" className="resume-btn" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={() => reel.set({ open: true })}>Resume</button>
           <nav className="tabs" aria-label="Machines">
             <button type="button" onClick={() => arcade.set({ focus: 'hero', shot: 'main' })}>← Back</button>
             {ORDER.map((f) => (

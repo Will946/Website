@@ -368,7 +368,7 @@ function Overlay() {
   }, []);
 
   return (
-    <div ref={layer} className={`reel-layer ${phase}${s.current.skip || fade ? ' fade' : ''}${unfolding ? ' unfolding' : ''}`} role="dialog" aria-modal="true" aria-label="Résumé">
+    <div ref={layer} className={`reel-layer ${phase}${s.current.skip || fade ? ' fade' : ''}${unfolding ? ' unfolding' : ''}`} role="dialog" aria-modal="true" aria-label="Resume">
       <div className="reel-scrim">
         {(phase === 'loading' || phase === 'travel' || phase === 'fan') && <canvas ref={rippleCanvas} className="reel-ripple" aria-hidden="true" />}
         <canvas ref={dotCanvas} className={`reel-dots${beadDone ? ' done' : ''}`} role="img" aria-label="Loading" />
@@ -388,7 +388,7 @@ function Overlay() {
               </svg>
             </button>
           )}
-          {phase === 'play' && <button type="button" className="reel-skip" onClick={toResume}>Skip to résumé</button>}
+          {phase === 'play' && <button type="button" className="reel-skip" onClick={toResume}>Skip to resume</button>}
           {phase === 'resume' && (
             <div className="reel-zoom" role="group" aria-label="Zoom">
               <button type="button" onClick={() => zoomApi.current?.by(1 / 1.5)} disabled={zoom <= 1} aria-label="Zoom out">−</button>

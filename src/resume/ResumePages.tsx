@@ -59,7 +59,7 @@ export default function ResumePages({ url, active, scroller, api, onZoom }: Prop
         cv.style.width = `${w / dpr}px`;
         cv.style.height = `${h / dpr}px`;
         cv.setAttribute('role', 'img');
-        cv.setAttribute('aria-label', `Résumé, page ${i} of ${d.numPages}`);
+        cv.setAttribute('aria-label', `Resume, page ${i} of ${d.numPages}`);
         const viewport = page.getViewport({ scale: cv.width / base.width });
         await page.render({ canvasContext: cv.getContext('2d')!, viewport }).promise;
         if (id !== run) return; // a newer size has taken over
