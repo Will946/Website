@@ -117,7 +117,7 @@ export function headerCard(): THREE.CanvasTexture {
     tex.needsUpdate = true;
   };
   draw();
-  Promise.all([fontsReady('220px "Lilita One"'), fontsReady('700 62px Nunito'), loadImage('/mascot.jpg').catch(() => undefined)])
+  Promise.all([fontsReady('220px "Lilita One"'), fontsReady('700 62px Nunito'), loadImage(`${import.meta.env.BASE_URL}mascot.jpg`).catch(() => undefined)])
     .then(([, , img]) => draw(img as HTMLImageElement | undefined));
   return tex;
 }

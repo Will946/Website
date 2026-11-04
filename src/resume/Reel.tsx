@@ -39,7 +39,7 @@ const FRAME_ASPECT = 16 / 9;
 const PX_PER_FRAME = 7;    // scroll distance per frame (the clip is 1390 frames)
 const TOUCH_GAIN = 1.6;    // fingers travel less than wheels
 const EASE_MS = 70;        // time constant of the shown frame chasing the target
-const PDF = '/assets/ResumeOfficial.pdf';
+const PDF = `${import.meta.env.BASE_URL}assets/ResumeOfficial.pdf`;
 
 const css = (c: number[]) => `rgb(${c.map(Math.round).join(' ')})`;
 const mix = (a: number, b: number, k: number) => a + (b - a) * k;

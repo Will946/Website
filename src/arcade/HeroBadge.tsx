@@ -156,7 +156,7 @@ export default function HeroBadge() {
     // The canvas is the whole window, so wherever it is thrown it is never cropped.
     <div className="hero-badge" aria-hidden="true">
       <Lanyard
-        frontImage="/lanyard/card.jpg"
+        frontImage={`${import.meta.env.BASE_URL}lanyard/card.jpg`}
         cardColor="#FFFDF6"
         size={cardH / h}
         anchorAt={(slotLeft + slotRight) / 2 / w}

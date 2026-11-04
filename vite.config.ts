@@ -21,10 +21,12 @@ function chunkList(base: string): Plugin {
   };
 }
 
-// Served from the root of the domain, so base is '/'.
+// Served from the domain root locally; the GitHub Pages workflow sets BASE_PATH=/Website/, since the site
+// lives at will946.github.io/Website/.
+const base = (globalThis as { process?: { env: Record<string, string | undefined> } }).process?.env.BASE_PATH ?? '/';
 export default defineConfig({
-  base: '/',
-  plugins: [react(), tailwindcss(), chunkList('/')],
+  base,
+  plugins: [react(), tailwindcss(), chunkList(base)],
   // pdf.js is imported lazily (the résumé reel); listing it here stops the dev server from
   // discovering it mid-session and force-reloading the page
   optimizeDeps: { include: ['pdfjs-dist'] },

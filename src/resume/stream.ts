@@ -13,7 +13,7 @@ export interface Unit { start: number; end: number; key: boolean }
 export interface Stream { data: Uint8Array; units: Unit[]; codec: string }
 
 export type Size = 720 | 1080 | 1440;
-export const url = (size: Size) => `/media/reel-${size}.h264`;
+export const url = (size: Size) => `${import.meta.env.BASE_URL}media/reel-${size}.h264`;
 
 /** Picks the rendition for this screen. Decoding 120 fps video is the expensive part, so it leans
  *  small: 1440p only on big 4K/5K displays, phones and slow connections get 720p. */

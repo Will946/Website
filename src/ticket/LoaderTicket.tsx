@@ -77,7 +77,7 @@ function Ticket({ link }: { link: Link }) {
             showStatus={false}
             labels={{ refining: 'Loading' }}
           >
-            <img src="/mascot.jpg" alt="" draggable={false} />
+            <img src={`${import.meta.env.BASE_URL}mascot.jpg`} alt="" draggable={false} />
           </RefineFrame>
         </div>
         <p className="ticket-side"><i className="dm" /><b>Will’s Arcade</b><i className="dm" /></p>
