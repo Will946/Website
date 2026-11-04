@@ -209,9 +209,6 @@ a.logo { display: grid; place-items: center; width: 34px; height: 34px; padding:
 .logo svg { width: 18px; height: 18px; fill: currentColor; }
 .corner { position: fixed; z-index: 3; top: max(16px, env(safe-area-inset-top, 0px)); right: 20px; display: flex; align-items: center; gap: 12px; opacity: 0; transition: opacity .5s 3.2s; }
 .corner.in { opacity: 1; }
-/* The WW logo in the hero's top-left corner, the round buttons' mirror image: it arrives with them and scrolls away with the hero. */
-.hero-logo { position: absolute; top: max(16px, env(safe-area-inset-top, 0px)); left: max(20px, env(safe-area-inset-left, 0px)); width: 48px; height: 48px; opacity: 0; transition: opacity .5s 3.2s; pointer-events: none; }
-.hero-logo.in { opacity: 1; }
 .icon-btn { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); box-shadow: 3px 3px 0 var(--drop); cursor: pointer; transition: transform .15s, box-shadow .15s; }
 .icon-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--drop); }
 .icon-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }

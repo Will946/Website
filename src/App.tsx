@@ -46,7 +46,6 @@ export default function App() {
       <div className="stage"><Stage /></div>
       <section className="hero">
         <div className="hero-fade">
-        <img className={`hero-logo${opened ? ' in' : ''}`} src={`${import.meta.env.BASE_URL}logo-ww.png`} alt="William Wong logo" />
         <NameSign />
         <HeroBadge />
         {/* The name itself is hidden from screen readers; this heading is its text for them and search. */}
