@@ -211,7 +211,7 @@ export function scrollArt(ch: string) {
   });
 }
 
-/** The dojo's name board: dark wood, 道場 carved in gold, with William's name. */
+/** The dojo's name board: dark wood, 黃道場 (Wong Dojo; 黃 is the surname Wong) carved in gold. */
 export function plaqueArt() {
   return painted(1024, 384, (g) => {
     const grd = g.createLinearGradient(0, 0, 0, 384);
@@ -219,7 +219,7 @@ export function plaqueArt() {
     g.fillStyle = grd; g.fillRect(0, 0, 1024, 384);
     g.strokeStyle = '#C9A55A'; g.lineWidth = 8; g.strokeRect(18, 18, 988, 348);
     g.fillStyle = '#E3C16F'; g.textAlign = 'center'; g.textBaseline = 'middle';
-    g.font = `800 210px ${JP}`; g.fillText('道 場', 512, 170);
+    g.font = `800 190px ${JP}`; g.fillText('黃道場', 512, 170);
     g.font = TITLE(52); g.fillText('WONG DOJO', 512, 315);
   });
 }

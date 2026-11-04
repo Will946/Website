@@ -83,14 +83,13 @@ export default function Sections() {
       <section id="contact" data-stop className="scene cards-left">
         <div className="scene-col">
           <SquishTitle text="Contact" />
-          <p className="section-lead"><span><S>Say hi. I reply faster than a Daruma gets back up.</S></span></p>
           <div className="contact-row">
             <a className="pill" href="mailto:wyw3932@gmail.com">wyw3932@gmail.com</a>
             <LogoLink name="github" className="pill logo" />
             <LogoLink name="instagram" className="pill logo" />
             <a className="pill" href="/assets/ResumeOfficial.pdf" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Resume</a>
           </div>
-          <footer className="site-footer"><S>Built with React Three Fiber and Rapier. The dolls and sticks are real physics; the jobs are real jobs.</S></footer>
+          <footer className="site-footer"><S>Built with React Three Fiber and Rapier.</S></footer>
         </div>
       </section>
     </div>

@@ -26,7 +26,7 @@ const CARD_ASPECT = 1.6 / 2.25;
 
 // What the back says. A line with a link opens it when tapped; the marks along the bottom likewise.
 const LINES: { role: string; at: string; href?: string }[] = [
-  { role: 'Electronics Engineer', at: 'PCB Design · Motor Drives · Embedded Systems' },
+  { role: 'Electronics Engineer', at: 'PCB Design · Power Systems · Embedded Systems' },
   { role: 'M.S./B.S. Electrical and Computer Engineering', at: '@ University of Southern California' },
   { role: 'Currently Working @', at: 'Between CEO roles spiritually' },
   { role: 'Current Project', at: 'Automated Daily Pill Dispenser' },

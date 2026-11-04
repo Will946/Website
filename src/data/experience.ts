@@ -44,26 +44,27 @@ export const EXPERIENCE: Experience[] = [
     bullets: [
       'B.S. in Electrical and Computer Engineering, University of Southern California.',
       'M.S. in Electrical Engineering, University of Southern California.',
+      'USC Formula SAE: Electronics Team · USC RPL: Avionics Team.',
+      'Capstone Project: CPRPal, a CPR feedback device on a custom PCB that fuses a load cell, an IMU and a PPG sensor to coach compression depth and rate in real time.',
     ],
   },
   {
     id: 'off-the-clock', title: 'Off the clock', role: 'From Atlanta, Georgia', dates: '100% human', about: true,
-    blurb: 'Golf, fishing, Elden Ring, board games, eating', tags: ['Golf', 'Elden Ring', 'Top 40 Beli'],
+    blurb: 'Golf, tennis, fishing, Elden Ring, movies, eating', tags: ['Golf', 'Elden Ring', 'Top 40 Beli'],
     bullets: [
-      'Golf, fishing and the occasional spikeball (2nd place once, middle school tournament).',
-      'Video games, currently Elden Ring.',
-      'Fav board games: Risk and Ticket to Ride.',
+      'Golf, tennis, fishing and the occasional spikeball.',
+      'Video games: currently Elden Ring and MW4.',
       'Top 40 Beli eater in Georgia.',
+      'Avid movie goblin.',
     ],
   },
 ];
 
 export const SKILLS: { group: string; items: string[] }[] = [
-  { group: 'EDA & PCB design', items: ['Altium Designer', 'KiCad', 'LTspice', 'ANSYS', '4-layer stackups', 'High-current motor-phase routing', 'Copper-pour thermal design', '120 Ω CAN pair routing'] },
-  { group: 'Power & motor drive', items: ['DRV8353 gate drivers', 'TMC6300 BLDC drivers', 'TB6612FNG H-bridges', 'TPS63070 buck-boost', 'HUSB238 USB-PD sinks', 'Precharge & inrush sizing', 'LM66200 ideal-diode protection', 'Bulk capacitance sizing'] },
-  { group: 'Embedded', items: ['STM32F4 / STM32F103', 'ESP32-S3 / ESP32-H2', 'FreeRTOS', 'Arduino Uno R4', 'SWD / J-Link bring-up', 'Timer-driven commutation'] },
-  { group: 'Sensors & measurement', items: ['INA219 / INA240 current sensing', 'HX711 load cells', 'BNO055 / ISM330DHCX IMUs', 'AS5048A magnetic encoders', 'ENS161 / ENS210', 'u-blox ZED-F9P RTK GNSS', 'PPG signal detection'] },
-  { group: 'Communication protocols', items: ['SPI', 'I2C', 'CAN / CAN FD', 'UART', 'USB Power Delivery'] },
+  { group: 'EDA & PCB design', items: ['Altium', 'KiCad', 'LTspice', 'ANSYS', '4-layer stackups', 'Thermal sizing'] },
+  { group: 'Power & motor drive', items: ['DRV8353 gate drivers', 'TMC6300', 'TB6612FNG', 'TPS63070 buck-boost', 'HUSB238 USB-PD', 'Ideal diodes', 'Buck converters', 'LDOs', 'Gate drivers', 'H-bridges'] },
+  { group: 'Embedded', items: ['STM32F4 / F103', 'ESP32-S3 / H2', 'FreeRTOS', 'Arduino Uno R4'] },
+  { group: 'Communication protocols', items: ['SPI', 'I2C', 'CAN / CAN FD', 'UART', 'USB Power Delivery', 'RS-485'] },
   { group: 'CAD & building systems', items: ['AutoCAD', 'Revit', 'Navisworks clash detection', 'NEC clearances', 'BAS I/O point lists', 'LV relay control circuits'] },
   { group: 'Programming & scripting', items: ['Python', 'C++', 'MATLAB', 'Excel VBA', 'LabVIEW'] },
 ];
