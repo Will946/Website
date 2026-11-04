@@ -1,4 +1,6 @@
-// The résumé reel. The button dims the arcade and shows two dots orbiting each other (after
+// The résumé reel. There is no clip any more (NO_CLIP): the button dims the arcade, two dots orbit
+// while the page is made ready, then the résumé comes out as a crumpled ball and opens into the page.
+// The clip code below is kept, unused, in case one comes back. Originally: the dots orbit (after
 // TikTok's loader) while the clip downloads. When it is ready each dot flies to where the clip's
 // first frame has its orb of the same colour, at that orb's size, dragging ripples through the arcade
 // behind it, and two big ripples fan out from both and carry the frame in (ripple.ts). The clip then
@@ -13,9 +15,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Frames } from './frames';
 import type { Paper } from './paper';
 import ResumePages, { type ZoomApi } from './ResumePages';
-import { createRipple, type Ripple } from './ripple';
-import { arcadeShot, loadReel, reel, useReel } from './store';
-import { FPS, pickSize, smaller } from './stream';
+import type { Ripple } from './ripple';
+import { reel, useReel } from './store';
+import { FPS } from './stream';
 import { preparePaper, unfold } from './unfold';
 
 type Phase = 'loading' | 'travel' | 'fan' | 'play' | 'resume' | 'closing';
@@ -38,8 +40,6 @@ const PX_PER_FRAME = 7;    // scroll distance per frame (the clip is 1390 frames
 const TOUCH_GAIN = 1.6;    // fingers travel less than wheels
 const EASE_MS = 70;        // time constant of the shown frame chasing the target
 const PDF = '/assets/ResumeOfficial.pdf';
-const MIN_DECODE_FPS = 60; // the first frames read low (a machine at 90 here still draws every refresh)
-const AUDIO = '/media/reel.m4a'; // the clip's own sound, cut from the source at the same point (see stream.ts)
 
 const css = (c: number[]) => `rgb(${c.map(Math.round).join(' ')})`;
 const mix = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -123,46 +123,23 @@ function Overlay() {
     setMoved(true);
   };
 
-  // load: dots for at least a second, until the first frames are decoded. The first group is
-  // timed; a machine whose decoder cannot keep up gets the next smaller rendition instead.
+  // load: the dots orbit for at least a second, until the crumpled paper is solved and the first page
+  // is drawn, then the page comes out of the ball.
   useEffect(() => {
     let dead = false;
     const t0 = performance.now();
     reel.set({ dimmed: true });
-    const start = async (size: ReturnType<typeof pickSize>) => {
-      const stream = await loadReel(size);
-      if (!(await Frames.supported(stream.codec))) return null;
-      if (dead) return null;
-      const f = await new Promise<Frames>((res) => {
-        const frames = new Frames(stream, () => { if (frames.decodeFps) res(frames); });
-        frames.want(0, 1);
-      });
-      s.current.frames?.close();
-      s.current.frames = f;
-      if (import.meta.env.DEV) ((window as unknown as { __reel: object[] }).__reel ??= []).push({ size, decodeFps: f.decodeFps });
-      const next = smaller(size);
-      // below this the picture would visibly drop frames; the sound keeps the time either way
-      if (f.decodeFps < MIN_DECODE_FPS && next && !dead) return start(next);
-      return f;
-    };
     (async () => {
-      let ok = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-      try { ok &&= !!(await start(pickSize())); } catch { ok = false; }
-      // the ripple layer and its still of the arcade, while the dots are still orbiting: setting it up
-      // takes a moment, and a stall here does not show the way one in mid-flight would
-      const first = ok ? s.current.frames?.get(0) : undefined;
-      if (first && !dead) {
-        const r = createRipple(rippleCanvas.current!, first, drawDpr());
-        ripple.current = r;
-        void arcadeShot.request().then((shot) => { if (shot) r?.arcade(shot); });
-      }
+      const sheet = () => panel.current?.querySelector('canvas');
+      for (let i = 0; i < 80 && !dead && (!paper.current || !sheet()); i++) await new Promise((r) => setTimeout(r, 50));
       await new Promise((r) => setTimeout(r, Math.max(0, MIN_DOTS_MS - (performance.now() - t0))));
       if (dead) return;
-      s.current.skip = !ok; // no decoder, reduced motion or no download: straight to the résumé
-      if (ok) setPhase('travel');
-      else { reel.set({ covered: true }); toResume(); }
+      // nothing to unfold (or reduced motion): the page just rises instead
+      s.current.skip = !paper.current || !sheet() || matchMedia('(prefers-reduced-motion: reduce)').matches;
+      reel.set({ covered: true });
+      setPhase('resume');
     })();
-    return () => { dead = true; s.current.frames?.close(); s.current.frames = null; };
+    return () => { dead = true; };
   }, []);
 
   // the dots, drawn at full resolution every frame so they stay crisp at any size: a true circular
@@ -373,7 +350,6 @@ function Overlay() {
         {(phase === 'loading' || phase === 'travel' || phase === 'fan') && <canvas ref={rippleCanvas} className="reel-ripple" aria-hidden="true" />}
         <canvas ref={dotCanvas} className={`reel-dots${beadDone ? ' done' : ''}`} role="img" aria-label="Loading" />
       </div>
-      <audio ref={audio} src={AUDIO} preload="auto" />
       <div className="reel">
         <canvas ref={canvas} aria-hidden="true" />
         <p className={`reel-hint${moved || auto ? '' : ' in'}`} aria-hidden="true">Scroll ↓</p>
