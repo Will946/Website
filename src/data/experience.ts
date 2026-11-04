@@ -1,5 +1,5 @@
 // Work, school and contests, from the résumé. The vending machine sells these as cards (so each is
-// also a Project: title, blurb, rarity and tags print on the card), and the Experience section
+// also a Project: title, blurb and tags), and the Experience section
 // below the arcade lists them in full.
 import type { Project } from './projects';
 
@@ -14,7 +14,7 @@ export interface Experience extends Project {
 export const EXPERIENCE: Experience[] = [
   {
     id: 'yu-ping', title: 'Yu-Ping', role: 'Electrical Design Intern', dates: 'Summer 2025',
-    blurb: 'Electrical Design Intern · Kaohsiung, Taiwan', rarity: 'LEGENDARY', tags: ['Revit', 'Navisworks', 'NEC'],
+    blurb: 'Electrical Design Intern · Kaohsiung, Taiwan', tags: ['Revit', 'Navisworks', 'NEC'],
     bullets: [
       'Modeled switchgear, panelboards and conduit runs in Revit against NEC clearances.',
       'Ran Navisworks clash detection to resolve about 30 HVAC and plumbing conflicts.',
@@ -23,7 +23,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'droxo', title: 'Droxo', role: 'Hardware Engineering Intern', dates: 'Summer 2024',
-    blurb: 'Hardware Engineering Intern · Tainan, Taiwan', rarity: 'RARE', tags: ['KiCad', 'Thermal', 'Copper pour'],
+    blurb: 'Hardware Engineering Intern · Tainan, Taiwan', tags: ['KiCad', 'Thermal', 'Copper pour'],
     bullets: [
       'Designed a spray-flow sensor board in KiCad with flowmeter input, current monitoring and transient protection.',
       'Calibrated a diaphragm pump across different nozzles.',
@@ -32,7 +32,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'skymul', title: 'Skymul', role: 'Electrical Engineering Intern', dates: 'Summer 2023',
-    blurb: 'Electrical Engineering Intern · Peachtree Corners, GA', rarity: 'RARE', tags: ['Altium', 'DRV8353', 'LTspice'],
+    blurb: 'Electrical Engineering Intern · Peachtree Corners, GA', tags: ['Altium', 'DRV8353', 'LTspice'],
     bullets: [
       'Designed DRV8353 gate-drive circuitry in Altium for a rebar-tying drone.',
       'Sized bulk capacitance in LTspice and routed high-current motor phases and CAN on a four-layer board.',
@@ -41,7 +41,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'usc', title: 'USC', role: 'Electrical Engineering', dates: 'B.S. + M.S.', about: true,
-    blurb: 'University of Southern California · B.S. ECE, M.S. EE', rarity: 'COMMON', tags: ['B.S. ECE', 'M.S. EE', 'Formula SAE'],
+    blurb: 'University of Southern California · B.S. ECE, M.S. EE', tags: ['B.S. ECE', 'M.S. EE', 'Formula SAE'],
     bullets: [
       'B.S. in Electrical and Computer Engineering, University of Southern California.',
       'M.S. in Electrical Engineering, University of Southern California.',
@@ -50,7 +50,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'off-the-clock', title: 'Off the clock', role: 'From Atlanta, Georgia', dates: '100% human', about: true,
-    blurb: 'Golf, fishing, Elden Ring, board games, eating', rarity: 'SHINY', tags: ['Golf', 'Elden Ring', 'Top 40 Beli'],
+    blurb: 'Golf, fishing, Elden Ring, board games, eating', tags: ['Golf', 'Elden Ring', 'Top 40 Beli'],
     bullets: [
       'Golf, fishing and the occasional spikeball (2nd place once, middle school tournament).',
       'Video games, currently Elden Ring.',

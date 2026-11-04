@@ -83,8 +83,7 @@ export default function App() {
           </nav>
           {focus === 'gacha' && gHeld !== null && !gOpened && <p className="twist-hint" aria-live="polite">Click the stick to read your fortune</p>}
           {card && (
-            <aside className={`card-info rarity-${card.rarity.toLowerCase()}`} aria-live="polite">
-              <span className="card-rarity">{card.rarity}</span>
+            <aside className="card-info" aria-live="polite">
               <h2>{card.title}</h2>
               <p>{card.blurb}</p>
               <ul>{card.tags.map((t) => <li key={t}>{t}</li>)}</ul>

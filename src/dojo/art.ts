@@ -99,18 +99,18 @@ export function omikujiSign() {
   });
 }
 
-/** The fortune slip for a drawn stick: its number, the fortune (from the project's rarity), the project. */
-export const FORTUNE: Record<string, string> = { LEGENDARY: '大吉', RARE: '中吉', COMMON: '小吉', SHINY: '末吉' };
-export const FORTUNE_EN: Record<string, string> = { LEGENDARY: 'Great blessing', RARE: 'Middle blessing', COMMON: 'Small blessing', SHINY: 'Future blessing' };
-export function fortuneSlip(n: number, rarity: string, title: string) {
+/** The fortune slip for a drawn stick: its number, a fortune drawn at random, the project. */
+const FORTUNES = [['大吉', 'Great blessing'], ['中吉', 'Middle blessing'], ['小吉', 'Small blessing'], ['末吉', 'Future blessing']];
+export function fortuneSlip(n: number, title: string) {
+  const [fortune, english] = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
   return painted(512, 896, (g) => {
     g.strokeStyle = '#B8231B'; g.lineWidth = 10; g.strokeRect(22, 22, 468, 852);
     g.lineWidth = 3; g.strokeRect(38, 38, 436, 820);
     g.fillStyle = '#141212'; g.textAlign = 'center'; g.textBaseline = 'middle';
     g.font = `800 64px ${JP}`; g.fillText('おみくじ', 256, 110);
     g.font = `800 52px ${JP}`; g.fillText(`第 ${n} 番`, 256, 200);
-    g.fillStyle = '#B8231B'; g.font = `800 200px ${JP}`; g.fillText(FORTUNE[rarity] ?? '吉', 256, 410);
-    g.fillStyle = '#6B5B45'; g.font = BODY(34, 900); g.fillText((FORTUNE_EN[rarity] ?? 'Blessing').toUpperCase(), 256, 560);
+    g.fillStyle = '#B8231B'; g.font = `800 200px ${JP}`; g.fillText(fortune, 256, 410);
+    g.fillStyle = '#6B5B45'; g.font = BODY(34, 900); g.fillText(english.toUpperCase(), 256, 560);
     g.fillStyle = '#141212';
     // the project's name, on up to two lines
     const words = title.split(' '), lines: string[] = [];

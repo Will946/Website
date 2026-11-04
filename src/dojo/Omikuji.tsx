@@ -3,7 +3,7 @@
 // Click the box (or press Enter): it is lifted, turned over and shaken, and one stick slides out of
 // the hole and drops into the tray, a real body (Rapier) that bounces and settles. Click the stick: it
 // comes up to the visitor. Click it again and its fortune slip unfolds beside it (the project, with
-// a fortune from its rarity: 大吉 for the legendary ones). Once more, or Put it back, and it goes home
+// a fortune drawn at random, 大吉 if you are lucky). Once more, or Put it back, and it goes home
 // into the box. The bell rope rings the bell.
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
@@ -102,7 +102,7 @@ export default function Omikuji() {
     g.position.copy(st.from); g.quaternion.copy(st.fromQ); g.visible = true;
     if (slip.current) slip.current.scale.set(0.001, 1, 1);
     slipMat.map?.dispose();
-    slipMat.map = fortuneSlip(stick.project + 1, PROJECTS[stick.project].rarity, PROJECTS[stick.project].title);
+    slipMat.map = fortuneSlip(stick.project + 1, PROJECTS[stick.project].title);
     slipMat.needsUpdate = true;
     stick.used = false;
     b.setEnabled(false);

@@ -8,6 +8,7 @@ import Lanyard from './Lanyard';
 import { drawLogo, LOGOS, type LogoName } from './logos';
 import { heroNameSize, NAME_EMS, TURN_DEG } from './NameSign';
 import { useTheme } from './theme';
+import { useArcade } from './store';
 
 const ARRIVES_S = 3.1;     // after the drop starts, when the last letter is down
 const NAME_LEFT = 0.07;    // share of the window where the name starts
@@ -41,6 +42,8 @@ export default function HeroBadge() {
   const [show, setShow] = useState(played);
   const [swingIn] = useState(!played);
   const dark = useTheme((s) => s.mode === 'dark');
+  // Only in the hero: hidden behind a machine's close-up, it must not catch the clicks meant for it.
+  const inHero = useArcade((s) => s.focus === 'hero');
   const [{ w, h }, setSize] = useState({ w: innerWidth, h: innerHeight });
   const [fonts, setFonts] = useState(0);
   const zones = useRef<Zone[]>([]);
@@ -145,6 +148,7 @@ export default function HeroBadge() {
         breeze={0}
         intro={swingIn}
         hold={!show}
+        interactive={inHero}
         backPainter={paintBack}
         backKey={fonts}
         onBackClick={onBackClick}

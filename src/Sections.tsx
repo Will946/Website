@@ -50,8 +50,7 @@ export default function Sections() {
           <p className="section-lead"><span><S>The omikuji box hands these out as fortunes, pranks included.</S></span> <button type="button" className="pill" onClick={() => play('gacha')}>Shake the box</button></p>
           <ul className="cards projects-grid">
             {PROJECTS.filter((p) => p.listed !== false).map((p) => (
-              <li key={p.id} id={`project-${p.id}`} className={`card rarity-${p.rarity.toLowerCase()}`}>
-                <span className="card-rarity">{p.rarity}</span>
+              <li key={p.id} id={`project-${p.id}`} className="card">
                 <h3><S>{p.title}</S></h3>
                 <p className="card-blurb"><S>{p.blurb}</S></p>
                 <ul className="tags">{p.tags.map((t) => <li key={t}><S>{t}</S></li>)}</ul>

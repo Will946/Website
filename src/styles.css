@@ -65,10 +65,6 @@ html.locked { overflow: hidden; }
 .card-info-links { display: flex; gap: 14px; flex-wrap: wrap; }
 .twist-hint { position: absolute; left: 50%; bottom: 10vh; transform: translateX(-50%); margin: 0; padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 900 15px/1.2 var(--font); pointer-events: none; animation: twist-hint-in .4s ease-out both; }
 @keyframes twist-hint-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
-.card-rarity { display: inline-block; padding: 4px 10px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 900 11px/1 var(--font); letter-spacing: 1.5px; }
-.rarity-legendary .card-rarity { background: linear-gradient(90deg, #FF8A1F, #FFC800); color: #141414; }
-.rarity-shiny .card-rarity { background: linear-gradient(90deg, #FF9EE0, #FFF27A, #7AF5FF); color: #141414; }
-.rarity-rare .card-rarity { background: linear-gradient(90deg, #7A5CFF, #8FE3FF); color: #fff; }
 @media (max-width: 700px) {
   .card-info { top: auto; bottom: max(20px, env(safe-area-inset-bottom, 0px)); right: 50%; transform: translateX(50%); animation: none; }
 }
@@ -259,7 +255,6 @@ html[data-theme="dark"] .theme-ring i { --glow: 255, 79, 139; }
 .skill-group h4 { margin: 0 0 6px; font: 900 12px/1 var(--font); letter-spacing: 1px; text-transform: uppercase; opacity: .65; }
 .card { position: relative; padding: 20px 22px 18px; border-radius: 18px; background: var(--paper); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--drop); }
 .card h3 { margin: 0; font: 400 28px/1.05 'Lilita One', 'Arial Black', sans-serif; }
-.card .card-rarity + h3 { margin-top: 10px; }
 .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .card-dates { font: 800 13px/1 var(--font); opacity: .65; white-space: nowrap; }
 .card-role { margin: 4px 0 10px; font-weight: 800; font-size: 15px; }
