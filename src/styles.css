@@ -175,7 +175,9 @@ html[data-theme="dark"] .loader.open .outline path { stroke: rgba(255, 253, 246,
 .loader-note::before { background: linear-gradient(90deg, transparent, var(--light)); }
 .loader-note::after { background: linear-gradient(90deg, var(--light), transparent); }
 @keyframes note-breathe { 50% { opacity: .85; } }
-@media (max-width: 560px) { .loader-note { font-size: 12px; gap: 9px; } .loader-note::before, .loader-note::after { display: none; } }
+.loader-note span { display: grid; gap: 6px; text-align: center; }
+.loader-note small { font-size: .82em; opacity: .7; }
+@media (max-width: 560px) { .loader-note { font-size: 12px; gap: 9px; white-space: normal; width: calc(100vw - 32px); justify-content: center; } .loader-note::before, .loader-note::after { display: none; } }
 .loader-retry {
   margin-top: 16px; padding: 0; border: 0; background: none; cursor: pointer; pointer-events: auto;
   font: 600 12px/1 var(--font); letter-spacing: 1.4px; text-transform: uppercase; color: var(--light); text-decoration: underline; text-underline-offset: 4px;
