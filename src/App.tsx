@@ -12,7 +12,6 @@ import { SoundToggle, ThemeToggle } from './arcade/ThemeToggle';
 import { EXPERIENCE } from './data/experience';
 import { PROJECTS } from './data/projects';
 import { gacha, useGacha } from './gacha/store';
-import HeldCard from './vending/HeldCard';
 import { useVending, vendActions } from './vending/store';
 import Reel from './resume/Reel';
 import { loadReel, reel } from './resume/store';
@@ -33,7 +32,7 @@ export default function App() {
   // The page holds still through the opening and while a machine is being played.
   useEffect(() => { document.documentElement.classList.toggle('locked', !landed || !hero); }, [landed, hero]);
 
-  // What the visitor is holding: a job card from the vending machine, a project from the gacha.
+  // What the visitor is holding: a job's sword from the rack, a project's fortune from the omikuji box.
   const card = focus === 'vending' && vHeld !== null ? { ...EXPERIENCE[vHeld], anchor: `exp-${EXPERIENCE[vHeld].id}` }
     : focus === 'gacha' && gHeld !== null && gOpened ? { ...PROJECTS[gHeld], anchor: PROJECTS[gHeld].listed === false ? null : `project-${PROJECTS[gHeld].id}` }
     : null;
@@ -64,7 +63,7 @@ export default function App() {
             <a href="/assets/ResumeOfficial.pdf" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Résumé</a>
           </nav>
         </div>
-        <p className={`hero-cta${landed ? ' in' : ''}`}>Scroll, or click a machine to play it</p>
+        <p className={`hero-cta${landed ? ' in' : ''}`}>Scroll, or click the drum, the box or the swords</p>
         </div>
       </section>
       <Sections />
@@ -82,7 +81,7 @@ export default function App() {
               <button key={f} type="button" aria-pressed={focus === f} onClick={() => arcade.set({ focus: f })}>{SPOT[f].label}</button>
             ))}
           </nav>
-          {focus === 'gacha' && gHeld !== null && !gOpened && <p className="twist-hint" aria-live="polite">Click the capsule to open it</p>}
+          {focus === 'gacha' && gHeld !== null && !gOpened && <p className="twist-hint" aria-live="polite">Click the stick to read your fortune</p>}
           {card && (
             <aside className={`card-info rarity-${card.rarity.toLowerCase()}`} aria-live="polite">
               <span className="card-rarity">{card.rarity}</span>
@@ -99,7 +98,6 @@ export default function App() {
           )}
         </div>
       )}
-      {focus === 'vending' && vHeld !== null && <HeldCard project={vHeld} />}
       <Reel />
       <div className="theme-ring" aria-hidden="true"><i /></div>
     </main>

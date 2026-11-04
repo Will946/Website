@@ -17,9 +17,9 @@ export const HERO_POSE: Record<MachineId, { x: number; z: number; yaw: number }>
 export const FOOTPRINT: Record<MachineId, [number, number]> = { claw: [0.84, 0.84], gacha: [0.83, 0.87], vending: [0.92, 0.8] };
 
 export const SPOT: Record<MachineId, { x: number; label: string }> = {
-  claw: { x: -1.2, label: 'Claw' },
-  gacha: { x: 0, label: 'Gacha' },
-  vending: { x: 1.25, label: 'Vending' },
+  claw: { x: -1.2, label: 'Taiko' },
+  gacha: { x: 0, label: 'Omikuji' },
+  vending: { x: 1.25, label: 'Katana' },
 };
 
 type View = { target: [number, number, number]; position: [number, number, number]; minDistance: number; maxDistance: number };
@@ -50,7 +50,7 @@ export const VIEW: Record<Focus, Record<Shot, View>> = {
     pickup: at(0, [0, 0.6, 0.23], [0.4, 0.95, 2.3], 1, 5),
   },
   claw: {
-    main: at(SPOT.claw.x, [0, 1.2, 0], [0.82, 1.58, 2.9], 1.4, 5),
+    main: at(SPOT.claw.x, [0, 0.85, 0.25], [0.9, 1.55, 4.2], 1.4, 5),
     pickup: at(SPOT.claw.x, [-0.14, 0.4, 0.3], [0.46, 0.72, 1.95], 1, 5),
   },
   vending: {

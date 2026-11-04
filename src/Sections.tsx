@@ -39,7 +39,7 @@ export default function Sections() {
       <section id="experience" data-stop className="scene cards-right">
         <div className="scene-col">
           <SquishTitle text="Experience" />
-          <p className="section-lead"><span><S>The vending machine sells these as cards.</S></span> <button type="button" className="pill" onClick={() => play('vending')}>Buy one</button></p>
+          <p className="section-lead"><span><S>Each sword on the rack is one of these. Draw one.</S></span> <button type="button" className="pill" onClick={() => play('vending')}>Draw a sword</button></p>
           <ol className="cards">{EXPERIENCE.filter((e) => !e.about).map((e) => <EntryCard key={e.id} entry={e} />)}</ol>
         </div>
       </section>
@@ -47,7 +47,7 @@ export default function Sections() {
       <section id="projects" data-stop className="scene cards-left">
         <div className="scene-col">
           <SquishTitle text="Projects" />
-          <p className="section-lead"><span><S>The gacha machine dispenses these, pranks included.</S></span> <button type="button" className="pill" onClick={() => play('gacha')}>Turn the handle</button></p>
+          <p className="section-lead"><span><S>The omikuji box hands these out as fortunes, pranks included.</S></span> <button type="button" className="pill" onClick={() => play('gacha')}>Shake the box</button></p>
           <ul className="cards projects-grid">
             {PROJECTS.filter((p) => p.listed !== false).map((p) => (
               <li key={p.id} id={`project-${p.id}`} className={`card rarity-${p.rarity.toLowerCase()}`}>
@@ -65,7 +65,7 @@ export default function Sections() {
       <section id="about" data-stop className="scene cards-right">
         <div className="scene-col">
           <SquishTitle text="About" />
-          <p className="section-lead"><span><S>School, hobbies and tools. The claw machine has plush versions of me.</S></span> <button type="button" className="pill" onClick={() => play('claw')}>Win one</button></p>
+          <p className="section-lead"><span><S>School, hobbies and tools. The taiko drum has Daruma dolls in it.</S></span> <button type="button" className="pill" onClick={() => play('claw')}>Hit the drum</button></p>
           <ol className="cards">
             {EXPERIENCE.filter((e) => e.about).map((e) => <EntryCard key={e.id} entry={e} />)}
             <li className="card">
@@ -84,14 +84,14 @@ export default function Sections() {
       <section id="contact" data-stop className="scene cards-left">
         <div className="scene-col">
           <SquishTitle text="Contact" />
-          <p className="section-lead"><span><S>Say hi. I reply faster than the claw machine pays out.</S></span></p>
+          <p className="section-lead"><span><S>Say hi. I reply faster than a Daruma gets back up.</S></span></p>
           <div className="contact-row">
             <a className="pill" href="mailto:wyw3932@gmail.com">wyw3932@gmail.com</a>
             <LogoLink name="github" className="pill logo" />
             <LogoLink name="instagram" className="pill logo" />
             <a className="pill" href="/assets/ResumeOfficial.pdf" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Résumé</a>
           </div>
-          <footer className="site-footer"><S>Built with React Three Fiber and Rapier. The machines are real physics; the jobs are real jobs.</S></footer>
+          <footer className="site-footer"><S>Built with React Three Fiber and Rapier. The dolls and sticks are real physics; the jobs are real jobs.</S></footer>
         </div>
       </section>
     </div>

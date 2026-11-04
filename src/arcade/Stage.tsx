@@ -1,4 +1,4 @@
-// The arcade: three machines side by side in a photo studio (Room.tsx): studio light-forms for
+// The dojo (the code still calls them machines): taiko, omikuji and katana rack side by side in a photo studio (Room.tsx): studio light-forms for
 // reflections (a strip behind lifts the machines off the room), a hard key light that throws real
 // shadows on the floor and wall, ambient occlusion, neutral tone mapping. It opens on the hero: the machines drop in across the right of the frame.
 import { Suspense, useEffect, useRef, useState } from 'react';
@@ -7,9 +7,9 @@ import { Environment, Lightformer, OrbitControls, PerformanceMonitor } from '@re
 import { Physics } from '@react-three/rapier';
 import { EffectComposer, N8AO, SMAA, ToneMapping, Vignette } from '@react-three/postprocessing';
 import { ToneMappingMode } from 'postprocessing';
-import Machine from '../gacha/Machine';
-import Vending from '../vending/Vending';
-import Claw from '../claw/Claw';
+import Omikuji from '../dojo/Omikuji';
+import Katana from '../dojo/Katana';
+import Taiko from '../dojo/Taiko';
 import CameraRig, { rig } from './CameraRig';
 import Drop from './Drop';
 import Dust from './Dust';
@@ -127,9 +127,9 @@ export default function Stage() {
 
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} timeStep={1 / 120} lengthUnit={0.1} numSolverIterations={8}>
-          <Drop machine="claw" x={SPOT.claw.x}><group userData={{ machine: 'claw' }}><Claw /></group></Drop>
-          <Drop machine="gacha" x={SPOT.gacha.x}><group userData={{ machine: 'gacha' }}><Machine /></group></Drop>
-          <Drop machine="vending" x={SPOT.vending.x}><group userData={{ machine: 'vending' }}><Vending /></group></Drop>
+          <Drop machine="claw" x={SPOT.claw.x}><group userData={{ machine: 'claw' }}><Taiko /></group></Drop>
+          <Drop machine="gacha" x={SPOT.gacha.x}><group userData={{ machine: 'gacha' }}><Omikuji /></group></Drop>
+          <Drop machine="vending" x={SPOT.vending.x}><group userData={{ machine: 'vending' }}><Katana /></group></Drop>
           <Warmup />
         </Physics>
       </Suspense>

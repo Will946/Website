@@ -82,6 +82,35 @@ export const thud = (strength = 1) => { thump(140, 60, 0.12, 0.35 * Math.min(1, 
 /** Prize win jingle. */
 export const jingle = () => [523, 659, 784, 1047].forEach((f, i) => tone('triangle', f, 0.22, 0.06, i * 0.09));
 
+// ---------- the dojo ----------
+/** Taiko: the big DON of a stick on the head, its skin ringing, the shell booming. */
+export const don = (strength = 1) => {
+  const s = Math.min(1, strength);
+  thump(118, 46, 0.7, 0.95 * s);
+  thump(230, 90, 0.12, 0.35 * s, 0.002);
+  burst(260, 1.2, 0.22, 0.4 * s);
+  burst(1600, 3, 0.02, 0.18 * s);
+};
+/** Taiko: the KA of a stick on the rim. */
+export const ka = () => { burst(2400, 6, 0.04, 0.3); thump(900, 500, 0.03, 0.12); };
+/** A blade drawn from its scabbard: the habaki leaving the koiguchi, then steel singing. */
+export const shing = () => {
+  burst(3400, 4, 0.08, 0.2);
+  burst(6200, 10, 0.35, 0.09, 0.05);
+  tone('sine', 2637, 0.9, 0.035, 0.06);
+  tone('sine', 3951, 0.6, 0.02, 0.07);
+};
+/** The blade home in its scabbard: a soft wooden click. */
+export const sheathe = () => { burst(1800, 5, 0.04, 0.22); thump(420, 200, 0.05, 0.15, 0.01); };
+/** Bamboo sticks rattling inside the omikuji box. */
+export const rattle = () => {
+  for (let i = 0; i < 9; i++) burst(1500 + Math.random() * 1400, 6, 0.03, 0.12 + Math.random() * 0.08, i * 0.05 + Math.random() * 0.02);
+};
+/** A wooden stick landing on wood. */
+export const tick = (strength = 1) => burst(2100 + Math.random() * 600, 7, 0.03, 0.06 + 0.2 * Math.min(1, strength));
+/** The shrine bell (suzu). */
+export const suzu = () => [1568, 2093, 2637].forEach((f, i) => tone('triangle', f, 0.7, 0.04, i * 0.03));
+
 /** Sound on, from inside the visitor's click (browsers only start audio from a user gesture). */
 export function unlockAudio() { gacha.set({ sound: true }); audio(); }
 
@@ -92,16 +121,16 @@ export function slam(kind: 'claw' | 'gacha' | 'vending', strength = 1) {
   thump(185, 60, 0.18, 0.35 * s, 0.004);
   burst(320, 0.8, 0.28, 0.32 * s);
   if (kind === 'claw') {
-    // Glass panes shivering in their frames, the gantry rattling on its rails.
-    for (let i = 0; i < 7; i++) burst(3600 + r() * 2400, 9, 0.05, (0.07 - i * 0.007) * s, 0.025 + i * 0.03 + r() * 0.01);
-    tone('triangle', 520, 0.22, 0.05 * s, 0.01);
+    // The taiko on its stand: the drum's skin booming, the stand's joints knocking.
+    thump(110, 44, 0.8, 0.5 * s, 0.01);
+    for (let i = 0; i < 3; i++) burst(900 + r() * 400, 4, 0.05, (0.12 - i * 0.03) * s, 0.03 + i * 0.05);
   } else if (kind === 'gacha') {
-    // Sixty-odd capsules jumping and settling in the hopper.
-    for (let i = 0; i < 16; i++) burst(1700 + r() * 1500, 5, 0.03, (0.2 - i * 0.011) * s, 0.02 + i * 0.022 + r() * 0.012);
+    // The omikuji sticks jumping in their box, the shrine bell jangling.
+    for (let i = 0; i < 12; i++) burst(1500 + r() * 1400, 6, 0.03, (0.18 - i * 0.012) * s, 0.02 + i * 0.025 + r() * 0.012);
+    tone('triangle', 2093, 0.5, 0.03 * s, 0.05);
   } else {
-    // Sheet steel ringing, the coils and cards jingling on the shelves.
-    tone('triangle', 140, 0.5, 0.16 * s, 0.005);
-    tone('sine', 410, 0.35, 0.07 * s, 0.01);
-    for (let i = 0; i < 6; i++) burst(4800 + r() * 2000, 10, 0.04, (0.05 - i * 0.006) * s, 0.04 + i * 0.035);
+    // The swords knocking in their rack, steel ringing.
+    tone('sine', 2637, 0.6, 0.03 * s, 0.02);
+    for (let i = 0; i < 5; i++) burst(1900 + r() * 700, 6, 0.04, (0.12 - i * 0.02) * s, 0.03 + i * 0.04);
   }
 }
