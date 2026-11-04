@@ -1,6 +1,4 @@
-// Work, school and contests, from the résumé. The vending machine sells these as cards (so each is
-// also a Project: title, blurb, rarity and tags print on the card), and the Experience section
-// below the arcade lists them in full.
+// Work, school and life outside it. Entries marked about: true show under About, the rest under Experience.
 import type { Project } from './projects';
 
 export interface Experience extends Project {

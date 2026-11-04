@@ -7,11 +7,11 @@ export interface Project {
   rarity: Rarity;
   tags: string[];
   url?: string;
-  /** Left out of the Projects section (the pranks): false. */
+  /** false: left out of the Projects section. */
   listed?: boolean;
 }
 
-// The gacha dispenses these (capsule index modulo the count); some are pranks.
+// Projects, in the order they show. listed: false hides an entry.
 export const PROJECTS: Project[] = [
   { id: 'pill-sorter', title: 'Automatic Pill Sorter', blurb: 'In progress. Fills a weekly pill organizer for you: each hopper holds one pill, and a disc rotates the right one into place. Custom PCB drives the motor.', rarity: 'LEGENDARY', tags: ['Custom PCB', 'Motor control', 'In progress'] },
   { id: 'formula-sae', title: 'USC Formula SAE', blurb: 'The car doesn’t move until every wire on this list checks out. 120-contact LV harness, shutdown circuit opening in under 10ms.', rarity: 'LEGENDARY', tags: ['Twisted-pair CAN', 'AIR < 10ms', '100Hz CAN log'] },
@@ -28,5 +28,5 @@ export const PROJECTS: Project[] = [
   { id: 'job-offers', title: 'William’s job offers', blurb: '0 found. Still wicked cool. Try again.', rarity: 'SHINY', tags: ['Unemployed'], listed: false },
   { id: 'duck', title: 'Rubber duck', blurb: 'It is a rubber duck. It does nothing. Try again.', rarity: 'COMMON', tags: ['Prank'], listed: false },
   { id: 'magic-smoke', title: 'The magic smoke', blurb: 'Escaped from a motor driver. Do not attempt to put it back in.', rarity: 'COMMON', tags: ['Prank'], listed: false },
-  { id: 'this-site', title: 'This website', blurb: 'A 3D gacha machine with a physics engine, because a PDF was not enough.', rarity: 'RARE', tags: ['React Three Fiber', 'Rapier'] },
+  { id: 'this-site', title: 'This website', blurb: 'Soda cans you shake until they pop, because a PDF was not enough.', rarity: 'COMMON', tags: ['React', 'Canvas'] },
 ];

@@ -3,8 +3,3 @@ dist
 *.local
 *.tsbuildinfo
 .DS_Store
-
-# build outputs and scratch
-3d/**/preview-dist/
-*.ts.bak
-
