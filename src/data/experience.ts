@@ -12,8 +12,8 @@ export interface Experience extends Project {
 
 export const EXPERIENCE: Experience[] = [
   {
-    id: 'gm', title: 'GM', role: 'Power Electronics Intern', dates: 'May 2025 – Aug 2025',
-    blurb: 'Power Electronics Intern · GM Performance Power Units', tags: ['Altium', 'BMS Design', 'Power Stage Layout'],
+    id: 'gm', title: 'GM Power Performance Units', role: 'Power Electronics Intern', dates: 'May 2025 – Aug 2025',
+    blurb: 'Power Electronics Intern · GM Power Performance Units', tags: ['Altium', 'BMS Design', 'Power Stage Layout'],
     bullets: [
       'Designed a single-cell Li-ion charge and protection PCB in Altium using a TP4056 CC/CV charger and a DW01A + FS8205A circuit for overcharge, over-discharge and short-circuit protection.',
       'Built a 2S USB-C boost-charging board around a CN3302 controller, laying out the inductor, Schottky and MOSFET power stage with a dedicated VCC plane.',
