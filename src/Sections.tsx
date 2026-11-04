@@ -42,11 +42,12 @@ export default function Sections() {
           <p className="section-lead"><button type="button" className="pill" onClick={() => play('gacha')}>Shake the box</button></p>
           <ul className="cards projects-grid">
             {PROJECTS.filter((p) => p.listed !== false).map((p) => (
-              <li key={p.id} id={`project-${p.id}`} className="card">
-                <h3><S>{p.title}</S></h3>
+              <li key={p.id} id={`project-${p.id}`} className={p.url ? 'card card-linked' : 'card'}>
+                {/* the whole card opens the project's repo: the title's link stretches over it */}
+                <h3>{p.url ? <a className="card-link" href={p.url} target="_blank" rel="noreferrer"><S>{p.title}</S></a> : <S>{p.title}</S>}</h3>
                 <p className="card-blurb"><S>{p.blurb}</S></p>
                 <ul className="tags">{p.tags.map((t) => <li key={t}><S>{t}</S></li>)}</ul>
-                {p.url && <div className="card-links"><a className="pill" href={p.url} target="_blank" rel="noreferrer">Open ↗</a></div>}
+                {p.url && <div className="card-links"><span className="pill" aria-hidden="true">GitHub ↗</span></div>}
               </li>
             ))}
           </ul>

@@ -264,6 +264,12 @@ html[data-theme="dark"] .theme-ring i { --glow: 255, 79, 139; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .tags li { padding: 4px 10px; border-radius: 999px; background: var(--chip); font-weight: 800; font-size: 12px; }
 .card-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.card-link { color: inherit; text-decoration: none; }
+.card-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.card-linked { cursor: pointer; transition: transform .15s, box-shadow .15s; }
+.card-linked:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--drop); }
+.card-linked:has(.card-link:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+.card-link:focus-visible { outline: none; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .site-footer { margin-top: 72px; font-weight: 700; font-size: 13px; opacity: .65; }
 /* Too narrow for two halves: the machine takes the top of the window, the cards scroll over it (STACKED in path.ts). */

@@ -87,7 +87,7 @@ export default function App() {
                 {card.anchor && <button type="button" onClick={() => readMore(card.anchor!)}>Read more</button>}
                 {focus === 'vending' && <button type="button" onClick={() => vendActions.putBack()}>Put it back</button>}
                 {focus === 'gacha' && <button type="button" onClick={() => gacha.actions.putBack()}>Put it back</button>}
-                {card.url && <a href={card.url} target="_blank" rel="noreferrer">Open project ↗</a>}
+                {card.url && <a href={card.url} target="_blank" rel="noreferrer">GitHub ↗</a>}
               </div>
             </aside>
           )}
