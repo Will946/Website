@@ -18,6 +18,7 @@ import { intro } from './intro';
 import { FOOTPRINT } from './layout';
 import type { MachineId } from './store';
 import { theme, useTheme } from './theme';
+import { PHONE } from './device';
 
 // The floor runs past the camera: on a narrow window it backs off a long way (heroEye in layout.ts).
 const WALL_Z = -3.2, FRONT_Z = 34, HALF_W = 26, WALL_H = 13;
@@ -215,7 +216,7 @@ export function RoomLight() {
   return (
     <directionalLight
       ref={key} position={[-1.6, 7.5, 3.6]} castShadow
-      shadow-mapSize={[2048, 2048]} shadow-bias={-0.0002} shadow-normalBias={0.012}
+      shadow-mapSize={PHONE ? [1024, 1024] : [2048, 2048]} shadow-bias={-0.0002} shadow-normalBias={0.012}
       shadow-camera-left={-5} shadow-camera-right={5} shadow-camera-top={4.2} shadow-camera-bottom={-4.2} shadow-camera-far={16}
     />
   );

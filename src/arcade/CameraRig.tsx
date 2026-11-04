@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
-import { INTERIOR_LIGHT, VIEW } from './layout';
+import { INTERIOR_LIGHT, VIEW, viewFor } from './layout';
 import { lightAt, pathFor } from './path';
 import { track } from './track';
 import { intro } from './intro';
@@ -47,7 +47,7 @@ export default function CameraRig() {
     }
     const g = glide.current;
     if (!g || !controls) return;
-    const v = VIEW[g.to][g.shot];
+    const v = g.to === 'hero' ? VIEW.hero[g.shot] : viewFor(g.to, g.shot, size.width / size.height);
     // Back to the page: to wherever the scroll left it (Hero.tsx takes over from there).
     if (g.to === 'hero') pathFor(size.width / size.height).camera(track.t, track.dolly, backEye, backLook);
     g.t = Math.min(1, g.t + dt / g.dur);

@@ -17,6 +17,7 @@ import { onImpact } from '../arcade/intro';
 import { bezier, clamp01, easeInOut, easeOut, holdPoint } from '../arcade/present';
 import { vendActions, vending } from '../vending/store';
 import { dojo } from './materials';
+import { PHONE } from '../arcade/device';
 import { gripWrap, screenArt, swordTag } from './art';
 
 const OX = SPOT.vending.x;
@@ -30,6 +31,7 @@ const y0 = (i: number) => 1.22 - i * (0.8 / Math.max(1, N - 1));
 const SAYA = ['#141212', '#7A1712', '#1B2A4A', '#23402B', '#5A3A1E', '#141212'];
 const SILK = ['#1B2A4A', '#141212', '#7A1712', '#B8862B', '#141212', '#7A1712'];
 const HOLD = { distance: 1.9, right: -0.16, down: 0.04, tilt: 0.32 };
+const HOLD_PORTRAIT = { distance: 3.6, right: 0, down: -0.3, tilt: 1.35 };   // a tall, narrow screen: nearly upright
 
 type Phase = 'rack' | 'lift' | 'draw' | 'present' | 'held' | 'return' | 'sheathe' | 'settle';
 
@@ -99,8 +101,9 @@ export default function Katana() {
   const lifted = (i: number, out: THREE.Vector3) => out.set(OX, y0(i) + 0.05, Z0 + 0.17);
   /** Where the hilt's origin goes, and how it turns, for the sword to hang in front of the camera. */
   const heldPose = (p: THREE.Vector3, q: THREE.Quaternion, since = 0) => {
-    q.copy(camera.quaternion).multiply(q2.setFromAxisAngle(axisZ, HOLD.tilt + Math.sin(since * 0.8) * 0.03));
-    holdPoint(camera, hp, HOLD.distance, HOLD.right, HOLD.down);
+    const h = (camera as THREE.PerspectiveCamera).aspect < 1 ? HOLD_PORTRAIT : HOLD;
+    q.copy(camera.quaternion).multiply(q2.setFromAxisAngle(axisZ, h.tilt + Math.sin(since * 0.8) * 0.03));
+    holdPoint(camera, hp, h.distance, h.right, h.down);
     hp.y += Math.sin(since * 1.3) * 0.006;
     return p.copy(hp).sub(v4.set(CENTER, 0, 0).applyQuaternion(q));
   };
@@ -299,6 +302,7 @@ export default function Katana() {
         <group key={e.id}>
           <group ref={(g) => { saya.current[i] = g; }} userData={{ sword: i }} position={[OX, y0(i), Z0]}>
             <mesh geometry={geo.saya} material={mats.saya[i % SAYA.length]} scale={[1, 1, 0.72]} castShadow />
+            {PHONE && <mesh position={[(BLADE - GRIP) / 2, 0, 0.02]}><boxGeometry args={[BLADE + GRIP + 0.05, 0.15, 0.1]} /><meshBasicMaterial visible={false} /></mesh>}
             <mesh geometry={geo.end} material={mats.saya[i % SAYA.length]} position={[BLADE + 0.028, SORI * 1.1, 0]} scale={[0.8, 1, 0.72]} />
             <mesh geometry={geo.cap} position={[0.012, 0, 0]} material={m.brass} scale={[0.86, 1.15, 0.86]} />
             {/* the job's paper tag, hanging from a cord */}

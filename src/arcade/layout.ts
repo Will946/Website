@@ -65,6 +65,17 @@ export const HERO_NAME = { x: -0.86, y: 0.54, distance: 3.0, line: 0.185, turn: 
 /** Roughly where the name's second line ends, as a share of the screen height (for the HTML under it). */
 export const HERO_TEXT_BOTTOM = 1 - (HERO_NAME.y + 1) / 2 + HERO_NAME.line * 2.25;
 
+/** A machine's close-up for a screen shape: on a narrow (portrait) screen the camera backs off along its
+ * line of sight until about 1.6 m across the target fits the width. On a normal window it is unchanged. */
+export function viewFor(focus: Focus, shot: Shot, aspect: number): View {
+  const v = VIEW[focus][shot];
+  const d = Math.hypot(v.position[0] - v.target[0], v.position[1] - v.target[1], v.position[2] - v.target[2]);
+  const k = Math.max(1, 1.6 / (2 * Math.tan((26 * Math.PI) / 360) * aspect * d));
+  if (k === 1) return v;
+  const p = v.position.map((x, i) => v.target[i] + (x - v.target[i]) * k) as [number, number, number];
+  return { target: v.target, position: p, minDistance: v.minDistance * k, maxDistance: v.maxDistance * k };
+}
+
 /** The hero camera's position for a screen shape: it backs off on narrow screens so the row still fits. */
 export function heroEye(aspect: number): [number, number, number] {
   const { position: p, target: t } = VIEW.hero.main, k = Math.max(1, 1.7 / aspect);

@@ -19,6 +19,8 @@ import Sparkles from './Sparkles';
 import Room, { RoomLight } from './Room';
 import Warmup from './Warmup';
 import { arcadeShot } from '../resume/store';
+import { PHONE } from './device';
+import * as THREE from 'three';
 import { intro, useIntro } from './intro';
 import { arcade } from './store';
 import { measure, stepTrack, track } from './track';
@@ -78,6 +80,13 @@ function ShadowGate() {
   return null;
 }
 
+/** Phones, which skip the effects: draws the scene itself at the effects' priority. (Any frame callback
+ * with a priority above 0, like ArcadeShot's below, turns off the canvas's own render.) */
+function PlainRender() {
+  useFrame(({ gl, scene, camera }) => gl.render(scene, camera), 1);
+  return null;
+}
+
 /** After the effects have drawn (they run at priority 1), so the résumé reel can take a still. */
 function ArcadeShot() {
   useEffect(() => arcadeShot.attach(() => pacer.draw()), []);
@@ -86,9 +95,9 @@ function ArcadeShot() {
 }
 
 export default function Stage() {
-  const [level, setLevel] = useState(() => (weakGPU() ? 0 : TOP));
+  const [level, setLevel] = useState(() => (PHONE || weakGPU() ? 0 : TOP));
   const quality = QUALITY[level];
-  const ceiling = useRef(TOP);   // a level that proved too slow isn't tried again this visit
+  const ceiling = useRef(PHONE ? 0 : TOP);   // a phone never climbs above the lightest picture   // a level that proved too slow isn't tried again this visit
   // The monitor only judges once everything has landed: the drop is the one heavy stretch, and a
   // verdict taken then would leave the machines soft for the rest of the visit.
   const landed = useIntro((s) => s.phase === 'done');
@@ -98,8 +107,11 @@ export default function Stage() {
       frameloop="never"
       dpr={Math.min(window.devicePixelRatio, quality.sharpness)}
       camera={{ fov: 26, position: VIEW.hero.main.position, near: 0.05, far: 60 }}
-      gl={{ antialias: false, powerPreference: 'high-performance' }}
-      onCreated={(state) => { if (import.meta.env.DEV) (window as unknown as { __r3f: unknown }).__r3f = state; }}
+      gl={{ antialias: PHONE, powerPreference: 'high-performance' }}
+      onCreated={(state) => {
+        // Phones skip the effect passes: the renderer does the same Neutral tone mapping itself.
+        if (PHONE) state.gl.toneMapping = THREE.NeutralToneMapping;
+        if (import.meta.env.DEV) (window as unknown as { __r3f: unknown }).__r3f = state; }}
     >
       <color attach="background" args={[BACKDROP]} />
       <Pacer />
@@ -146,12 +158,13 @@ export default function Stage() {
         minAzimuthAngle={-1.15} maxAzimuthAngle={1.15}
       />
 
-      <EffectComposer multisampling={0}>
+      {PHONE && <PlainRender />}
+      {!PHONE && <EffectComposer multisampling={0}>
         {quality.ao ? <N8AO aoRadius={0.05} distanceFalloff={0.6} intensity={2.4} halfRes /> : <></>}
         <SMAA />
         <Vignette offset={0.32} darkness={0.38} />
         <ToneMapping mode={ToneMappingMode.NEUTRAL} />
-      </EffectComposer>
+      </EffectComposer>}
     </Canvas>
   );
 }

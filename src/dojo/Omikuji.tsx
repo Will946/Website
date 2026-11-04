@@ -29,6 +29,7 @@ const STICK = { w: 0.01, l: 0.17 };
 const MAX_STICKS = 5;
 const OVER = new THREE.Vector3(OX + TRAY.x, TABLE_Y + 0.4, TRAY.z);   // the box's middle while it is shaken over the tray
 const HOLD = { distance: 0.6, right: -0.05, down: 0.0 };
+const HOLD_PORTRAIT = { distance: 0.95, right: 0, down: -0.07 };   // a tall, narrow screen: further out, a little high
 
 // A fixed pool of stick bodies, made once with the scene and switched on and off: Rapier must not have
 // bodies added or removed while the visitor plays, and Drop.tsx needs every body there at mount.
@@ -263,7 +264,8 @@ export default function Omikuji() {
     // The stick in hand.
     const g = hand.current, sl = slip.current;
     if (g && g.visible) {
-      holdPoint(camera, v4, HOLD.distance, HOLD.right, HOLD.down);
+      const h = (camera as THREE.PerspectiveCamera).aspect < 1 ? HOLD_PORTRAIT : HOLD;
+      holdPoint(camera, v4, h.distance, h.right, h.down);
       q1.copy(camera.quaternion).multiply(q2.setFromEuler(e1.set(0, 0, 0.12)));
       st.ht += dt;
       if (st.hand === 'up') {

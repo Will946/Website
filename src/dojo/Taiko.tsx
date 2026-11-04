@@ -13,12 +13,13 @@ import { arcade, wantShot } from '../arcade/store';
 import { rig } from '../arcade/CameraRig';
 import { onImpact } from '../arcade/intro';
 import { dojo } from './materials';
+import { PHONE } from '../arcade/device';
 import { darumaArt, drumHead, lanternArt } from './art';
 
 const OX = SPOT.claw.x;
 const DRUM = { y: 1.0, r: 0.355, belly: 0.41, half: 0.26 };   // centre height, head radius, widest radius, half length
 const HEAD_Z = DRUM.half + 0.002;
-const MAX_DOLLS = 10;
+const MAX_DOLLS = PHONE ? 4 : 10;   // fewer bodies for a phone's CPU
 const DOLL_R = 0.055;
 const STRIKE = 0.22;   // seconds, a full stroke
 
