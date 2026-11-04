@@ -1,7 +1,7 @@
-// The room the arcade stands in, one of two looks on the same floor and wall.
-// Light: the ticket's sunburst over cream and yellow tiles, an inked line where the wall meets the floor.
-// Dark: after hours, a purple tiled floor with pink joints, and neon tubes along the wall that stutter on
-// one at a time after the lights go out.
+// The dojo the three pieces stand in, one of two looks on the same floor and wall.
+// Light: polished floorboards, a wall of shoji screens under a slatted transom and plaster, dark posts,
+// two hanging scrolls and the dojo's name board. Dark: the same room at night, the paper gone blue-grey,
+// and lantern light coming on along the transom one strip at a time after the lights go out.
 //
 // Both are unlit by the studio's reflections on purpose (Lambert ignores them): what lights them is a fixed
 // glow plus the key light, so the emissive level alone sets how dark a shadow falls.
@@ -11,7 +11,8 @@
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
-import { canvas, finish } from '../gacha/textures';
+import { canvas, finish, rng } from '../gacha/textures';
+import { plaqueArt, scrollArt } from '../dojo/art';
 import { neonHum } from '../gacha/sound';
 import { intro } from './intro';
 import { FOOTPRINT } from './layout';
@@ -20,56 +21,88 @@ import { theme, useTheme } from './theme';
 
 // The floor runs past the camera: on a narrow window it backs off a long way (heroEye in layout.ts).
 const WALL_Z = -3.2, FRONT_Z = 34, HALF_W = 26, WALL_H = 13;
-const TILE = 2;                         // the checker's repeat, m
 const SHADOW_LIFT = { light: 0.5, dark: 0.9 };   // the glow: what a shadow bottoms out at (lower is darker)
 const KEY = { light: { intensity: 2.4, color: '#fffaf2', reflections: 1 }, dark: { intensity: 1.15, color: '#C9B8FF', reflections: 0.62 } };
 const FLASH = 0.7, FLASH_DECAY = 3.5;   // the light coming back on overshoots, then settles
-const SPILL: Record<MachineId, string> = { claw: '#FF6FA8', gacha: '#FFF3C4', vending: '#FFEFC2' };
-const SPILL_DARK: Record<MachineId, string> = { claw: '#FF4F8B', gacha: '#FFC800', vending: '#7AF5FF' };
-const TUBES = [{ y: 2.5, color: '#FF6FA8' }, { y: 2.3, color: '#FFC800' }, { y: 2.1, color: '#7AF5FF' }];
+const SPILL: Record<MachineId, string> = { claw: '#FFD9A8', gacha: '#FFF3C4', vending: '#FFEFC2' };
+const SPILL_DARK: Record<MachineId, string> = { claw: '#FF8A3A', gacha: '#FFB347', vending: '#FFC870' };
+const TUBES = [{ y: 2.35, color: '#FFB45A' }];   // lantern light through the transom
 const TUBE_DELAY = 0.45, TUBE_STAGGER = 0.24;    // s after the lights go out
 const STUTTER = [1, 0, 0.7, 0, 0, 1, 0.25, 1, 0, 1];   // a tube striking, one step per STUTTER_S
 const STUTTER_S = 0.05;
 
-function checker(a: string, b: string, line: string) {
-  const [c, g] = canvas(256, 256);
-  g.fillStyle = a; g.fillRect(0, 0, 256, 256);
-  g.fillStyle = b; g.fillRect(0, 0, 128, 128); g.fillRect(128, 128, 128, 128);
-  g.strokeStyle = line; g.lineWidth = 3;
-  [[0, 0], [128, 128], [128, 0], [0, 128]].forEach(([x, y]) => g.strokeRect(x, y, 128, 128));
+/** Polished dojo floorboards running away from the wall, butt joints staggered: one 2.88 m square, repeated. */
+const PLANK_TILE = 2.88;
+function boards(tones: string[], grain: string, joint: string, seed: number) {
+  const [c, g] = canvas(512, 512);
+  const r = rng(seed), W = 512 / 16;   // sixteen boards of 18 cm
+  for (let i = 0; i < 16; i++) {
+    const x = i * W;
+    let y = -r() * 512;
+    while (y < 512) {
+      const len = 160 + r() * 260;
+      g.fillStyle = tones[Math.floor(r() * tones.length)];
+      g.fillRect(x, y, W, len);
+      g.strokeStyle = grain; g.lineWidth = 1;
+      for (let k = 0; k < 5; k++) {
+        const gx = x + 3 + r() * (W - 6);
+        g.globalAlpha = 0.25 + r() * 0.35;
+        g.beginPath(); g.moveTo(gx, y);
+        for (let yy = y; yy < y + len; yy += 24) g.lineTo(gx + Math.sin(yy * 0.03 + k) * 1.6, yy);
+        g.stroke();
+      }
+      g.globalAlpha = 1;
+      g.fillStyle = joint; g.fillRect(x, y + len - 1.5, W, 1.5);
+      y += len;
+    }
+    g.fillStyle = joint; g.fillRect(x + W - 1.5, 0, 1.5, 512);
+  }
   const t = finish(c);
-  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set((HALF_W * 2) / TILE, (FRONT_Z - WALL_Z) / TILE); t.anisotropy = 16;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set((HALF_W * 2) / PLANK_TILE, (FRONT_Z - WALL_Z) / PLANK_TILE); t.anisotropy = 16;
   return t;
 }
 
-/** The ticket's rays, 26 m wide and 13 m high, with a halftone rising from the floor. */
-function sunburstWall() {
-  const [c, g] = canvas(2048, 1024);
-  g.fillStyle = '#F6C034'; g.fillRect(0, 0, 2048, 1024);
-  const cx = 1054, cy = 1002;
-  g.fillStyle = '#FFD65A';
-  for (let i = 0; i < 40; i++) {
-    const a = (i / 40) * Math.PI * 2, b = a + Math.PI / 40;
-    g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * 2400, cy + Math.sin(a) * 2400); g.lineTo(cx + Math.cos(b) * 2400, cy + Math.sin(b) * 2400); g.fill();
+/** One 3.2 m bay of the dojo wall, floor to ceiling: four shoji screens under a transom, plaster above,
+ * dark posts at either side. Repeated along the wall. 160 px a metre. */
+const BAY = 3.2, PX = 160;
+function shojiWall(night: boolean) {
+  const W = BAY * PX, H = WALL_H * PX;
+  const [c, g] = canvas(W, H);
+  const y = (m: number) => H - m * PX;            // metres up the wall to canvas y
+  const wood = night ? '#24170F' : '#5A3A22', woodLight = night ? '#3A2618' : '#8A5E38';
+  const paper = night ? '#2A3046' : '#F7F0DE', plaster = night ? '#1A1B26' : '#EADFC8';
+  g.fillStyle = plaster; g.fillRect(0, 0, W, H);
+  // plaster texture
+  const r = rng(night ? 9 : 4);
+  for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(${night ? '255,255,255' : '120,90,50'},${0.02 + r() * 0.03})`; g.fillRect(r() * W, r() * y(2.8), 2 + r() * 3, 2 + r() * 3); }
+  // the shoji: four panels, each a frame with a kumiko grid of 3 x 6 over paper
+  const top = 2.0, bottom = 0.12, pw = BAY / 4;
+  for (let k = 0; k < 4; k++) {
+    const x0 = k * pw * PX;
+    g.fillStyle = paper; g.fillRect(x0, y(top), pw * PX, (top - bottom) * PX);
+    if (!night) { const glow = g.createLinearGradient(0, y(top), 0, y(bottom)); glow.addColorStop(0, 'rgba(255,250,235,0)'); glow.addColorStop(1, 'rgba(230,214,180,.35)'); g.fillStyle = glow; g.fillRect(x0, y(top), pw * PX, (top - bottom) * PX); }
+    g.fillStyle = woodLight;
+    for (let i = 1; i < 3; i++) g.fillRect(x0 + (i * pw * PX) / 3 - 1.5, y(top), 3, (top - bottom) * PX);
+    for (let j = 1; j < 6; j++) g.fillRect(x0, y(bottom + (j * (top - bottom)) / 6) - 1.5, pw * PX, 3);
+    g.fillStyle = wood;
+    g.fillRect(x0, y(top), 7, (top - bottom) * PX); g.fillRect(x0 + pw * PX - 7, y(top), 7, (top - bottom) * PX);
+    g.fillRect(x0, y(bottom) - 14, pw * PX, 14);   // the kick rail
   }
-  g.fillStyle = '#EDA52F';
-  for (let y = 1024; y > 880; y -= 7) for (let x = y % 14 ? 0 : 3.5; x < 2048; x += 7) {
-    const r = 2.6 * (y - 880) / 144;
-    if (r > 0.3) { g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }
-  }
-  g.fillStyle = '#141414'; g.fillRect(0, 1024 - 3.5, 2048, 3.5);
-  const t = finish(c); t.anisotropy = 16;
-  return t;
-}
-
-/** Dark panels and a skirting board, at the same scale. The light on it comes from the tubes. */
-function nightWall() {
-  const [c, g] = canvas(2048, 1024);
-  g.fillStyle = '#1D1638'; g.fillRect(0, 0, 2048, 1024);
-  g.fillStyle = '#211A40';
-  for (let x = 0; x < 2048; x += 94) g.fillRect(x, 0, 47, 1024);
-  g.fillStyle = '#0F0B20'; g.fillRect(0, 1024 - 11, 2048, 11);
-  const t = finish(c); t.anisotropy = 16;
+  // skirting, the lintel (kamoi), a slatted transom (ranma), the upper beam (nageshi)
+  g.fillStyle = wood; g.fillRect(0, y(bottom), W, bottom * PX);
+  g.fillRect(0, y(2.1), W, 0.1 * PX);
+  g.fillStyle = paper; g.fillRect(0, y(2.6), W, 0.5 * PX);
+  g.fillStyle = woodLight; for (let x = 6; x < W; x += 14) g.fillRect(x, y(2.6), 4, 0.5 * PX);
+  g.fillStyle = wood; g.fillRect(0, y(2.78), W, 0.18 * PX);
+  g.fillStyle = woodLight; g.fillRect(0, y(2.78), W, 3);
+  // ceiling beam far up, and the posts at both ends of the bay
+  g.fillStyle = wood; g.fillRect(0, y(4.4), W, 0.22 * PX);
+  g.fillRect(0, 0, 10, H); g.fillRect(W - 10, 0, 10, H);
+  g.fillStyle = woodLight; g.fillRect(10, 0, 3, H); g.fillRect(W - 13, 0, 3, H);
+  // an inked line where the wall meets the floor, as before
+  g.fillStyle = '#141414'; g.fillRect(0, H - 3, W, 3);
+  const t = finish(c);
+  t.wrapS = THREE.RepeatWrapping; t.repeat.set((HALF_W * 2) / BAY, 1); t.offset.x = 0.5; t.anisotropy = 16;
   return t;
 }
 
@@ -102,11 +135,13 @@ export default function Room() {
     return {
       floor: surface(), wall: surface(),
       maps: {
-        light: { floor: checker('#F2C744', '#FFEDB3', 'rgba(150,90,0,.28)'), wall: sunburstWall() },
-        dark: { floor: checker('#2A2150', '#352A63', 'rgba(255,111,168,.35)'), wall: nightWall() },
+        light: { floor: boards(['#C9945C', '#D19D63', '#C08852', '#D6A86F', '#BB8550'], 'rgba(110,60,20,.5)', 'rgba(70,40,15,.55)', 3), wall: shojiWall(false) },
+        dark: { floor: boards(['#3A2618', '#432C1C', '#33221A', '#4A3020', '#2E1F15'], 'rgba(0,0,0,.45)', 'rgba(0,0,0,.6)', 3), wall: shojiWall(true) },
       },
       tubes: TUBES.map((t) => glowing(tube, t.color)),
-      spill: glowing(spill, '#FF9FD0'),
+      spill: glowing(spill, '#FFB45A'),
+      scrolls: ['侍', '道'].map((ch) => new THREE.MeshLambertMaterial({ map: scrollArt(ch), emissive: '#fff', emissiveMap: scrollArt(ch) })),
+      plaque: new THREE.MeshLambertMaterial({ map: plaqueArt(), emissive: '#fff', emissiveMap: plaqueArt() }),
     };
   }, []);
 
@@ -118,6 +153,7 @@ export default function Room() {
     look.floor.map = look.floor.emissiveMap = m.floor;
     look.wall.map = look.wall.emissiveMap = m.wall;
     look.floor.emissiveIntensity = look.wall.emissiveIntensity = SHADOW_LIFT[mode];
+    [...look.scrolls, look.plaque].forEach((m) => { m.emissiveIntensity = SHADOW_LIFT[mode] * (mode === 'dark' ? 0.35 : 1); });
   }, [look, mode]);
 
   // Each tube strikes on its own: dark from the switch (or the loader opening), then the stutter, then on.
@@ -144,6 +180,15 @@ export default function Room() {
     <group>
       <mesh material={look.floor} rotation-x={-Math.PI / 2} position={[0, 0, (FRONT_Z + WALL_Z) / 2]} receiveShadow><planeGeometry args={[HALF_W * 2, FRONT_Z - WALL_Z]} /></mesh>
       <mesh material={look.wall} position={[0, WALL_H / 2, WALL_Z]} receiveShadow><planeGeometry args={[HALF_W * 2, WALL_H]} /></mesh>
+      {/* two hanging scrolls either side, the dojo's name board above the middle */}
+      {[[-3.2, 0], [5.0, 1]].map(([x, i]) => (
+        <group key={x} position={[x, 0, WALL_Z + 0.02]}>
+          <mesh material={look.scrolls[i]} position={[0, 1.42, 0]}><planeGeometry args={[0.5, 1.45]} /></mesh>
+          <mesh position={[0, 2.16, 0.012]} rotation-z={Math.PI / 2}><cylinderGeometry args={[0.014, 0.014, 0.6, 10]} /><meshStandardMaterial color="#3A2618" roughness={0.5} /></mesh>
+          <mesh position={[0, 0.69, 0.012]} rotation-z={Math.PI / 2}><cylinderGeometry args={[0.016, 0.016, 0.62, 10]} /><meshStandardMaterial color="#3A2618" roughness={0.5} /></mesh>
+        </group>
+      ))}
+      <mesh material={look.plaque} position={[0.1, 2.93, WALL_Z + 0.03]}><planeGeometry args={[1.12, 0.42]} /></mesh>
       <group visible={mode === 'dark'}>
         {TUBES.map((t, i) => <mesh key={t.y} material={look.tubes[i]} position={[0, t.y, WALL_Z + 0.01 * (i + 1)]} scale={[HALF_W * 2, 1, 1]} renderOrder={1}><planeGeometry /></mesh>)}
         <mesh material={look.spill} rotation-x={-Math.PI / 2} position={[0, 0.002, WALL_Z + 2]} scale={[HALF_W * 2, 4, 1]} renderOrder={1}><planeGeometry /></mesh>

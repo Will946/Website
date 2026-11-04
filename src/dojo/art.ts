@@ -197,3 +197,29 @@ export function gripWrap(silk: string) {
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   return t;
 }
+
+/** A hanging scroll (kakejiku): silk border, washi centre, one brushed character, a red seal. */
+export function scrollArt(ch: string) {
+  return painted(256, 744, (g) => {
+    g.fillStyle = '#5B6E5A'; g.fillRect(0, 0, 256, 744);
+    g.fillStyle = '#C9A55A'; g.fillRect(0, 90, 256, 8); g.fillRect(0, 646, 256, 8);
+    g.fillStyle = '#F6EFDC'; g.fillRect(26, 110, 204, 524);
+    g.fillStyle = '#141212'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = `800 190px ${JP}`;
+    g.fillText(ch, 128, 330);
+    g.fillStyle = '#B8231B'; g.fillRect(150, 520, 34, 34);
+    g.fillStyle = '#F6EFDC'; g.fillRect(158, 528, 18, 4); g.fillRect(158, 540, 18, 4);
+  });
+}
+
+/** The dojo's name board: dark wood, 道場 carved in gold, with William's name. */
+export function plaqueArt() {
+  return painted(1024, 384, (g) => {
+    const grd = g.createLinearGradient(0, 0, 0, 384);
+    grd.addColorStop(0, '#3A2618'); grd.addColorStop(1, '#24170F');
+    g.fillStyle = grd; g.fillRect(0, 0, 1024, 384);
+    g.strokeStyle = '#C9A55A'; g.lineWidth = 8; g.strokeRect(18, 18, 988, 348);
+    g.fillStyle = '#E3C16F'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.font = `800 210px ${JP}`; g.fillText('道 場', 512, 170);
+    g.font = TITLE(52); g.fillText('WONG DOJO', 512, 315);
+  });
+}

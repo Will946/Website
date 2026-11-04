@@ -24,7 +24,7 @@ import { arcade } from './store';
 import { measure, stepTrack, track } from './track';
 import { SPOT, VIEW } from './layout';
 
-const BACKDROP = '#F2C744';
+const BACKDROP = '#EADFC8';
 const SHADOW_LINGER = 3;   // seconds the shadows keep updating after the last move: the machines settle, poses ease
 // The picture's cost, lightest first; it steps a notch at a time if frames slow down. Ambient occlusion is
 // the dearest effect by far, so it goes before sharpness does. 1.5x is the top: at 2x a Retina screen holds
