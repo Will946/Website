@@ -47,7 +47,12 @@ export default function Sections() {
                 <h3>{p.url ? <a className="card-link" href={p.url} target="_blank" rel="noreferrer"><S>{p.title}</S></a> : <S>{p.title}</S>}</h3>
                 <p className="card-blurb"><S>{p.blurb}</S></p>
                 <ul className="tags">{p.tags.map((t) => <li key={t}><S>{t}</S></li>)}</ul>
-                {p.url && <div className="card-links"><span className="pill" aria-hidden="true">GitHub ↗</span></div>}
+                {(p.url || p.kind) && (
+                  <div className="card-links">
+                    {p.url && <span className="pill" aria-hidden="true">GitHub ↗</span>}
+                    {p.kind && <span className={`kind kind-${p.kind.toLowerCase().replace(' ', '-')}`}>{p.kind}</span>}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
