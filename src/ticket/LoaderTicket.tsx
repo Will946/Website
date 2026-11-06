@@ -80,7 +80,7 @@ function Ticket({ link }: { link: Link }) {
             <img src={`${import.meta.env.BASE_URL}mascot.jpg`} alt="" draggable={false} />
           </RefineFrame>
         </div>
-        <p className="ticket-side"><i className="dm" /><b>Will’s Arcade</b><i className="dm" /></p>
+        <p className="ticket-side"><i className="dm" /><b>Will’s Dojo</b><i className="dm" /></p>
       </TearTicket>
       <div className={tearing ? 'tear-cue gone' : 'tear-cue'} aria-hidden="true">
         <span>Tear to enter</span>
