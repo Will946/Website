@@ -47,7 +47,6 @@ export default function HeroBadge() {
   const inHero = useArcade((s) => s.focus === 'hero');
   const [{ w, h }, setSize] = useState({ w: innerWidth, h: innerHeight });
   const [fonts, setFonts] = useState(0);
-  const logo = useRef<HTMLImageElement | null>(null);   // the WW mark, on the coin left of GitHub
   const zones = useRef<Zone[]>([]);
   const face = useRef({ w: 1, h: 1 });
 
@@ -60,13 +59,7 @@ export default function HeroBadge() {
   // The back is lettered in the page's fonts: painted again once they are in.
   useEffect(() => {
     let alive = true;
-    const mark = new Promise<void>((done) => {
-      const img = new Image();
-      img.onload = () => { logo.current = img; done(); };
-      img.onerror = () => done();
-      img.src = `${import.meta.env.BASE_URL}logo-ww.png`;
-    });
-    Promise.all([document.fonts.load("400 60px 'Lilita One'"), document.fonts.load('900 48px Nunito'), document.fonts.load('700 40px Nunito'), mark])
+    Promise.all([document.fonts.load("400 60px 'Lilita One'"), document.fonts.load('900 48px Nunito'), document.fonts.load('700 40px Nunito')])
       .then(() => { if (alive) setFonts(1); }, () => { if (alive) setFonts(1); });
     return () => { alive = false; };
   }, []);
@@ -131,14 +124,10 @@ export default function HeroBadge() {
       }
       y = subY + 112;
     }
-    // the marks along the bottom, each on a dark coin: the WW logo first, then the links, each a tap away
-    const R = 92, cy = HH - 215, coins = MARKS.length + 1;
-    const coinX = (i: number) => 512 + (i - (coins - 1) / 2) * 300;
-    ctx.fillStyle = INK;
-    ctx.beginPath(); ctx.arc(coinX(0), cy, R, 0, Math.PI * 2); ctx.fill();
-    if (logo.current) ctx.drawImage(logo.current, coinX(0) - R * 0.86, cy - R * 0.86, R * 1.72, R * 1.72);
-    MARKS.forEach((name, j) => {
-      const i = j + 1, cx = coinX(i);
+    // the marks along the bottom, each on a dark coin, each a tap away
+    const R = 92, cy = HH - 215;
+    MARKS.forEach((name, i) => {
+      const cx = 512 + (i - (MARKS.length - 1) / 2) * 300;
       ctx.fillStyle = INK;
       ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#FFFDF6';
