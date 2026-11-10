@@ -13,7 +13,9 @@ import { EXPERIENCE } from './data/experience';
 import { PROJECTS } from './data/projects';
 import { gacha, useGacha } from './gacha/store';
 import { useVending, vendActions } from './vending/store';
-import Sections from './Sections';
+import Reel from './resume/Reel';
+import { loadReel, reel } from './resume/store';
+import Sections, { openReel } from './Sections';
 
 const VERBS = ['solders', 'builds', 'debugs', 'fries boards', 'tinkers'];
 
@@ -58,6 +60,7 @@ export default function App() {
           <nav className="hero-links" aria-label="Links">
             <LogoLink name="github" className="logo" />
             <LogoLink name="instagram" className="logo" />
+            <a href={`${import.meta.env.BASE_URL}assets/ResumeOfficial.pdf`} onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Resume</a>
           </nav>
         </div>
         <p className={`hero-cta${landed ? ' in' : ''}`}>Scroll, or click the drum, the box or the swords</p>
@@ -71,6 +74,7 @@ export default function App() {
       {!hero && (
         <div className="play-ui">
           <header className="brand">William Wong</header>
+          <button type="button" className="resume-btn" onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={() => reel.set({ open: true })}>Resume</button>
           <nav className="tabs" aria-label="Machines">
             <button type="button" onClick={() => arcade.set({ focus: 'hero', shot: 'main' })}>← Back</button>
             {ORDER.map((f) => (
@@ -93,6 +97,7 @@ export default function App() {
           )}
         </div>
       )}
+      <Reel />
       <div className="theme-ring" aria-hidden="true"><i /></div>
     </main>
   );
