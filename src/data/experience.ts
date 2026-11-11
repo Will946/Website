@@ -12,30 +12,30 @@ export interface Experience extends Project {
 
 export const EXPERIENCE: Experience[] = [
   {
-    id: 'yu-ping', title: 'Yu-Ping', role: 'Electrical Design Intern', dates: 'May 2025 – Aug 2025',
-    blurb: 'Electrical Design Intern · Yu Ping Enterprise · Kaohsiung, TW', tags: ['Excel VBA', 'Revit', 'Navisworks'],
+    id: 'gm', title: 'GM Power Performance Units', role: 'Power Electronics Intern', dates: 'May 2025 – Aug 2025',
+    blurb: 'Power Electronics Intern · GM Power Performance Units', tags: ['Altium', 'BMS Design', 'Power Stage Layout'],
     bullets: [
-      'Modeled switchgear lineups, panelboards, and conduit routing for one floor in Revit, verified NEC clearances, and used Navisworks to resolve 30 HVAC and plumbing conflicts before installation.',
-      'Developed LV relay control circuits and BAS interface points for 2 AHUs and 24 VAVs, producing wiring diagrams and I/O point lists for mechanical and controls lead markup.',
-      'Built Excel VBA macros to parse commissioning logs, flag voltage deviations above 5%, and tabulate phase imbalance by zone, streamlining a 6-hour weekly review.',
+      'Designed a single-cell Li-ion charge and protection PCB in Altium using a TP4056 CC/CV charger and a DW01A + FS8205A circuit for overcharge, over-discharge and short-circuit protection.',
+      'Built a 2S USB-C boost-charging board around a CN3302 controller, laying out the inductor, Schottky and MOSFET power stage with a dedicated VCC plane.',
+      'Developed a 3S (12.6 V) protection board stacking three DW01A monitors with BJT level-shifters driving shared back-to-back MOSFET disconnects.',
     ],
   },
   {
-    id: 'droxo', title: 'Droxo', role: 'Hardware Engineering Intern', dates: 'May 2024 – Aug 2024',
-    blurb: 'Hardware Engineering Intern · Droxo Tech · Tainan, TW', tags: ['PCB Design', 'Test & Validation', 'KiCad'],
+    id: 'northrop', title: 'Northrop Grumman', role: 'Electrical Engineering Intern, PMU Post-Silicon Validation', dates: 'May 2024 – Aug 2024',
+    blurb: 'Electrical Engineering Intern · PMU Post-Silicon Validation · Melbourne, FL', tags: ['Multiphase Buck', 'Python Automation', 'Post-Silicon Validation'],
     bullets: [
-      'Designed a spray-flow sensor interface board in KiCad, integrating a Hall flowmeter input with a 4.7 kΩ pull-up, 1 kHz RC filter, INA219 monitor on a 0.033 Ω shunt, and a 24 V TVS at the harness connector.',
-      'Characterized a PWM-controlled pump across three nozzle configurations, generating duty-cycle-to-flow calibration curves from 0.4–2.1 L/min with ±5% flow accuracy.',
-      'Investigated 25 returned motor driver boards, tracing failures to electrochemical migration, MOSFET overheating, and connector fretting; measured a 118 °C hotspot at 8 A that justified a copper-pour increase.',
+      'Validated random load-transient performance of multiphase buck converters with a Python load generator spanning hardware configs and PVT within DUT overcurrent and thermal limits.',
+      'Characterized phase-shedding behavior and automated oscilloscopes in Python to capture and process out-of-spec voltage excursions.',
+      'Drove cross-functional FA on spec-violating transients, improved the test-platform hardware and applied the methodology to dynamic aging validation of power bridges.',
     ],
   },
   {
-    id: 'skymul', title: 'Skymul', role: 'Electrical Engineering Intern', dates: 'May 2023 – Aug 2023',
-    blurb: 'Electrical Engineering Intern · Skymul · Peachtree Corners, GA', tags: ['Altium', 'LTspice', 'PCB Layout'],
+    id: 'lockheed', title: 'Lockheed Martin', role: 'Hardware Engineering Intern, Rotary and Mission Systems', dates: 'May 2023 – Aug 2023',
+    blurb: 'Hardware Engineering Intern · Rotary and Mission Systems · Marietta, GA', tags: ['HDMI PCB Design', 'Validation & FA', 'SI/PI'],
     bullets: [
-      'Designed DRV8353 gate-drive and power-input blocks in Altium, selecting 10 Ω gate resistors, 1 µF VCP, and 47 nF bypass caps.',
-      'Simulated a 24 V input transient in LTspice to size bulk capacitance for a 5 A load step, then routed high-current motor phases and a 120 Ω CAN pair on a four-layer PCB.',
-      'Ran a 40-point validation matrix across 0–6 A locked-rotor limits, 20–26 V input, and 0–55 °C to qualify actuator-driver builds.',
+      'Design lead for the DC-DC power, USB and debug subsystems of an HDMI development-platform PCB, and built an electrical, mechanical and software test system to characterize IR performance.',
+      'Led validation, debug and FA across HDMI CTS, PMU, SoC, SI/PI, UART, NAND and PCIe, including root-causing an internal-layer PCB failure and analyzing SoC thermal and power across PVT corners.',
+      'Increased factory-line component test coverage by over 25% by auditing placement and value checks at every test station.',
     ],
   },
   {

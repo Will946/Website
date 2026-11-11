@@ -7,18 +7,10 @@ import SquishTitle from './arcade/SquishTitle';
 import { arcade, type MachineId } from './arcade/store';
 import { EXPERIENCE, SKILLS } from './data/experience';
 import { PROJECTS } from './data/projects';
-import { loadReel, reel } from './resume/store';
 import { S, useSquish } from './Squish';
 
 /** Play the machine beside this section; leaving it comes back to the same place on the page. */
 const play = (machine: MachineId) => arcade.set({ focus: machine, shot: 'main' });
-
-// The Résumé links play the reel; a modified click (new tab, download) still gets the PDF itself.
-export function openReel(e: React.MouseEvent) {
-  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-  e.preventDefault();
-  reel.set({ open: true });
-}
 
 function EntryCard({ entry, tags = true }: { entry: (typeof EXPERIENCE)[number]; tags?: boolean }) {
   return (
@@ -93,7 +85,6 @@ export default function Sections() {
             <a className="pill" href="mailto:wyw3932@gmail.com">wyw3932@gmail.com</a>
             <LogoLink name="github" className="pill logo" />
             <LogoLink name="instagram" className="pill logo" />
-            <a className="pill" href={`${import.meta.env.BASE_URL}assets/ResumeOfficial.pdf`} onPointerEnter={() => loadReel()} onFocus={() => loadReel()} onClick={openReel}>Resume</a>
           </div>
           <footer className="site-footer"><S>Built with React Three Fiber and Rapier.</S></footer>
         </div>
